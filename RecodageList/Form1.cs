@@ -11,21 +11,31 @@ namespace RecodageList
 {
     public partial class Form1 : Form
     {
+
+        static Correspondances Corr = new Correspondances();
+        static List<Correspondance> TableCorresp = Corr.ObtenirListeCorrespondance_SQLITE();
+        static CorrespondancesAffichages CorrAffichage = new CorrespondancesAffichages();
+        static List<CorrespondanceAffichage> TableCorrespAffichage = CorrAffichage.ObtenirListeCorrespondanceAffichage(TableCorresp);
+
+        static Referentiels referentiel = new Referentiels();
+        static List<Referentiel> TableRef = referentiel.ObtenirListeReferentiel_SQLITE();
+        static ReferentielsAffichages RefAffichage = new ReferentielsAffichages();
+        static List<ReferentielAffichage> TableRefAffichage = RefAffichage.ObtenirListeReferentielAffichage(TableRef);
+
+        static ComboBoxFiltres combobox_object = new ComboBoxFiltres();
+        static List<ComboBoxFiltre> comboboxfiltre = combobox_object.ObtenirComboBoxFiltre();
+
         public Form1()
         {
             InitializeComponent();
             InitDatagridSaisie();
-            //InitDatagridReferentiel();
+            InitDatagridReferentiel();
             InitComboBoxFiltre();
         }
 
         public void InitDatagridSaisie()
         {
             var source = new BindingSource();
-            Correspondances Corr = new Correspondances();
-            List<Correspondance> TableCorresp = Corr.ObtenirListeCorrespondance_SQLITE();
-            CorrespondancesAffichages CorrAffichage = new CorrespondancesAffichages();
-            List<CorrespondanceAffichage> TableCorrespAffichage = CorrAffichage.ObtenirListeCorrespondanceAffichage(TableCorresp);
             source.DataSource = TableCorrespAffichage;
             dataGridView_saisie.DataSource = source;
         }
@@ -33,18 +43,12 @@ namespace RecodageList
         public void InitDatagridReferentiel()
         {
             var source = new BindingSource();
-            Referentiels referentiel = new Referentiels();
-            List<Referentiel> TableRef = referentiel.ObtenirListeReferentiel_SQLITE();
-            ReferentielsAffichages RefAffichage = new ReferentielsAffichages();
-            List<ReferentielAffichage> TableRefAffichage = RefAffichage.ObtenirListeReferentielAffichage(TableRef);
             source.DataSource = TableRefAffichage;
             dataGridView_ref.DataSource = source;
         }
 
         public void InitComboBoxFiltre()
         {
-            ComboBoxFiltres combobox_object = new ComboBoxFiltres();
-            List <ComboBoxFiltre> comboboxfiltre = combobox_object.ObtenirComboBoxFiltre();
             /*
             for(int i=0;i<comboboxfiltre.Count;i++)
             {
@@ -87,7 +91,7 @@ namespace RecodageList
         {
             Correspondances Corr = new Correspondances();
             Console.WriteLine(dataGridView_saisie.DataMember);
-            List<Correspondance> TableCorresp = Corr.ObtenirListeCorrespondance_SQLITE();
+            //List<Correspondance> TableCorresp = Corr.ObtenirListeCorrespondance_SQLITE();
             List<Correspondance> CorrFiltered = new List<Correspondance>();
             Console.WriteLine(comboBox_filtre.ValueMember);
             CorrFiltered = Corr.FiltrerListeCorrespondance_parCPL(TableCorresp, (string)comboBox_filtre.SelectedValue);
@@ -98,7 +102,7 @@ namespace RecodageList
             dataGridView_saisie.DataSource = source;
 
             Referentiels Ref = new Referentiels();
-            List<Referentiel> TableRef = Ref.ObtenirListeReferentiel_SQLITE();
+            //List<Referentiel> TableRef = Ref.ObtenirListeReferentiel_SQLITE();
             List<Referentiel> RefFiltered = new List<Referentiel>();
             RefFiltered = Ref.FiltrerListeReferentiel_parCPL(TableRef, (string)comboBox_filtre.SelectedValue);
             ReferentielsAffichages RefAffichage = new ReferentielsAffichages();
