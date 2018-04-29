@@ -4,7 +4,7 @@ using System.Text;
 
 namespace RecodageList.DAL
 {
-    class CorrespondanceAffichage
+    class CorrespondanceAffichage_old
     {
         public string Ancien_Code { get; set; }
         public string Libelle_Ancien_Code { get; set; }

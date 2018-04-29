@@ -25,5 +25,10 @@ namespace RecodageList.DAL
         public string Cpl { get; set; }
         public string Cpl1 { get; set; }
         public string Cpl2 { get; set; }
+        public string Canonical { get; set; }
+        public int FlagReferentiel { get; set; }
+
+
     }
+
 }

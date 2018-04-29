@@ -17,5 +17,6 @@ namespace RecodageList.DAL
         public string Cpl2 { get; set; }
         public string Cpl3 { get; set; }
         public string DateFinValidite { get; set; }
+        public int IndiceLevenshtein { get; set; }
     }
 }

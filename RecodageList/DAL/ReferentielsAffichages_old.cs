@@ -4,7 +4,7 @@ using System.Text;
 
 namespace RecodageList.DAL
 {
-    class ReferentielsAffichages
+    class ReferentielsAffichages_old
     {
         public List<ReferentielAffichage> ObtenirListeReferentielAffichage(List<Referentiel> TableReferentielFULL)
         {
@@ -14,6 +14,7 @@ namespace RecodageList.DAL
                 ReferentielAffichage RefAffichage = new ReferentielAffichage();
                 RefAffichage.Code = TableReferentielFULL[i].Code;
                 RefAffichage.Lib = TableReferentielFULL[i].Lib;
+                RefAffichage.IndiceLevenshtein = TableReferentielFULL[i].IndiceLevenshtein;
                 TableReferentielAffichage.Add(RefAffichage);
             }
             return (TableReferentielAffichage);

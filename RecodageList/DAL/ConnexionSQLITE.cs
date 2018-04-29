@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using Finisar.SQLite;
+using System.Data.SQLite;
+
 
 namespace RecodageList.DAL
 {
@@ -13,7 +14,7 @@ namespace RecodageList.DAL
 
         public void SetConnection()
         {
-            sql_con = new SQLiteConnection("Data Source=C:\\DataBase\\PREVTGXV7_Complete.db;Version=3;New=False;Compress=True;");
+            sql_con = new SQLiteConnection("Data Source=C:\\DataBase\\PREVTGXV7_CHVAL.db;Version=3;New=False;Compress=True;");
 
         }
 
