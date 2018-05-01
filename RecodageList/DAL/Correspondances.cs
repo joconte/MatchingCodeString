@@ -5,18 +5,20 @@ using System.Data;
 using System.Data.SQLite;
 using RecodageList.Fonction;
 using System.Linq;
+using System.Windows.Forms;
 
 namespace RecodageList.DAL
 {
     class Correspondances
     {
-        ConnexionSQLITE con = new ConnexionSQLITE();
+        //ConnexionSQLITE con = new ConnexionSQLITE();
         
         public List<Correspondance> ObtenirListeCorrespondance_SQLITE(List<Referentiel> Referentiel)
         {
             //con.SetConnection();
-
-            Dictionary<string, string> columnNameToAddColumnSql = new Dictionary<string, string>
+            using (ConnexionSQLITE con = new ConnexionSQLITE())
+            {
+                Dictionary<string, string> columnNameToAddColumnSql = new Dictionary<string, string>
             {
                 {
                     "FlagPreventiel",
@@ -24,141 +26,153 @@ namespace RecodageList.DAL
                 }
             };
 
-            foreach (var pair in columnNameToAddColumnSql)
-            {
-                string columnName = pair.Key;
-                string sql = pair.Value;
+                foreach (var pair in columnNameToAddColumnSql)
+                {
+                    string columnName = pair.Key;
+                    string sql = pair.Value;
 
-                try
-                {
-                    con.ExecuteQuery(sql);
-                    con.ExecuteQuery("Update TB$S_CorrespondanceItem set FlagPreventiel = 0");
-                }
-                catch (System.Data.SQLite.SQLiteException e)
-                {
-                    con.sql_con.Close();
-                    Console.WriteLine(string.Format("Failed to create column [{0}]. Most likely it already exists, which is fine.", columnName));
-                }
-            }
-
-           
-            //con.sql_con.Open();
-            //sql_cmd = sql_con.CreateCommand();
-            //string CommandText = "select Type_Item, Ancien_Code, Libelle_Ancien_Code,AncienCodeActif,Nouveau_Code,Libelle_Nouveau_Code,Code_utilise,NomSchema,DateRecensement,DateMAJ,TypeRecodage,NouveauCodeInactif,UtilisateurCreation,TypeRef,NomRef,Cpl,Cpl1,Cpl2,Occurrence from TB$S_CorrespondanceItem";
-            string CommandText = "select Ancien_Code as [C.Src], Libelle_Ancien_Code as [Intitule source],Nouveau_Code as [Code référentiel],Libelle_Nouveau_Code as [Intitulé du référentiel], Occurrence, Code_utilise,DateRecensement,NomRef,NouveauCodeInactif,TypeRef,Cpl,Cpl1,Cpl2,FlagPreventiel from TB$S_CorrespondanceItem where NomRef!='PersonnePhysique' order by Occurrence desc";
-            con.sql_cmd = new SQLiteCommand(CommandText, con.sql_con);
-            con.sql_con.Open();
-            SQLiteDataReader reader = con.sql_cmd.ExecuteReader();
-            //DB = new SQLiteDataAdapter(CommandText, sql_con);
-            List<Correspondance> ListCorrespFlagPreventiel = new List<Correspondance>();
-            List<Correspondance> ListCorresp = new List<Correspondance>();
-            Fonc fonc = new Fonc();
-            while (reader.Read())
-            {
-                Correspondance Corresp = new Correspondance();
-                if (reader["C.Src"] != DBNull.Value)
-                {
-                    Corresp.Ancien_Code = (string)reader["C.Src"];
-                }
-                if (reader["Intitule source"] != DBNull.Value)
-                {
-                    Corresp.Libelle_Ancien_Code = (string)reader["Intitule source"];
-                    Corresp.Canonical = fonc.CanonicalString(Corresp.Libelle_Ancien_Code);
-                }
-                if (reader["Code référentiel"] != DBNull.Value)
-                {
-                    Corresp.Nouveau_Code = (string)reader["Code référentiel"];
-                }
-                if (reader["Intitulé du référentiel"] != DBNull.Value)
-                {
-                    Corresp.Libelle_Nouveau_Code = (string)reader["Intitulé du référentiel"];
-                    //Console.WriteLine("Je suis avant le canonical");
-                    //Console.WriteLine("Canonical : " + fonc.CanonicalString(Corresp.Libelle_Nouveau_Code));
-                }
-                if (reader["NomRef"] != DBNull.Value)
-                {
-                    Corresp.NomRef = (string)reader["NomRef"];
-                }
-                if (reader["Occurrence"] != DBNull.Value)
-                {
-                    Corresp.Occurrence = Convert.ToInt32(reader["Occurrence"]);
-                }
-                if (reader["TypeRef"] != DBNull.Value)
-                {
-                    Corresp.TypeRef = (string)reader["TypeRef"];
-                }
-                if (reader["Cpl"] != DBNull.Value && (string)reader["Cpl"] != "")
-                {
-                    Corresp.Cpl = (string)reader["Cpl"];
-                }
-                else
-                {
-                    Corresp.Cpl = "0";
-                }
-                if (reader["Cpl1"] != DBNull.Value && (string)reader["Cpl1"]!= "")
-                {
-                    Corresp.Cpl1 = (string)reader["Cpl1"];
-                }
-                else
-                {
-                    Corresp.Cpl1 = "0";
-                }
-                if (reader["Cpl2"] != DBNull.Value && (string)reader["Cpl2"] != "")
-                {
-                    Corresp.Cpl2 = (string)reader["Cpl2"];
-                }
-                else
-                {
-                    Corresp.Cpl2 = "0";
-                }
-                if (reader["FlagPreventiel"] != DBNull.Value)
-                {
-                    Corresp.FlagReferentiel = Convert.ToInt32(reader["FlagPreventiel"]);
-                }
-                /*if (reader["Code référentiel"].ToString().Trim() == "APTITU_06" && reader["FlagPreventiel"] != DBNull.Value)
-                {
-                    Console.WriteLine("Motif Aptitude");
-                    Console.WriteLine(Convert.ToInt32(reader["FlagPreventiel"]));
-                }*/
-                if (reader["Code référentiel"] != DBNull.Value && (string)reader["Code référentiel"] != "" && reader["FlagPreventiel"]!= DBNull.Value && Convert.ToInt32(reader["FlagPreventiel"]) == 0)
-                {
-                    /*if(reader["Code référentiel"] != DBNull.Value && (string)reader["Code référentiel"] != "" && reader["FlagPreventiel"] != DBNull.Value && Convert.ToInt32(reader["FlagPreventiel"]) == 0 
-                        && reader["Code référentiel"].ToString().Trim() == "APTITU_06")
+                    try
                     {
-                        Console.WriteLine("Motif Aptitude");
-                    }*/
-                        if (NouveauCodeEstDansLeReferentiel((string)reader["Code référentiel"], Referentiel, Corresp.Cpl, Corresp.Cpl1, Corresp.Cpl2, (string)reader["TypeRef"]))
+                        con.ExecuteQuery(sql);
+                        con.ExecuteQuery("Update TB$S_CorrespondanceItem set FlagPreventiel = 0");
+                    }
+                    catch (System.Data.SQLite.SQLiteException e)
                     {
-                        Corresp.FlagReferentiel = 1;
-                        ListCorrespFlagPreventiel.Add(Corresp);
-                        //UpdateSQLITE_TBCorrespondance_FlagPreventiel(Corresp);
+                        con.sql_con.Close();
+                        Console.WriteLine(string.Format("Failed to create column [{0}]. Most likely it already exists, which is fine.", columnName));
                     }
                 }
-                if (reader["NouveauCodeInactif"] != DBNull.Value)
+
+
+                //con.sql_con.Open();
+                //sql_cmd = sql_con.CreateCommand();
+                //string CommandText = "select Type_Item, Ancien_Code, Libelle_Ancien_Code,AncienCodeActif,Nouveau_Code,Libelle_Nouveau_Code,Code_utilise,NomSchema,DateRecensement,DateMAJ,TypeRecodage,NouveauCodeInactif,UtilisateurCreation,TypeRef,NomRef,Cpl,Cpl1,Cpl2,Occurrence from TB$S_CorrespondanceItem";
+                string CommandText = "select Ancien_Code as [C.Src], Libelle_Ancien_Code as [Intitule source],Nouveau_Code as [Code référentiel],Libelle_Nouveau_Code as [Intitulé du référentiel], Occurrence, Code_utilise,DateRecensement,NomRef,NouveauCodeInactif,TypeRef,Cpl,Cpl1,Cpl2,FlagPreventiel from TB$S_CorrespondanceItem where NomRef!='PersonnePhysique' order by Occurrence desc";
+
+                using (con.sql_cmd = new SQLiteCommand(CommandText, con.sql_con))
                 {
-                    Corresp.NouveauCodeInactif = (bool)reader["NouveauCodeInactif"];
+                    con.sql_con.Open();
+
+                    using (SQLiteDataReader reader = con.sql_cmd.ExecuteReader())
+                    {
+                        //DB = new SQLiteDataAdapter(CommandText, sql_con);
+                        List<Correspondance> ListCorrespFlagPreventiel = new List<Correspondance>();
+                        List<Correspondance> ListCorresp = new List<Correspondance>();
+                        Fonc fonc = new Fonc();
+                        while (reader.Read())
+                        {
+                            Correspondance Corresp = new Correspondance();
+                            if (reader["C.Src"] != DBNull.Value)
+                            {
+                                Corresp.Ancien_Code = (string)reader["C.Src"];
+                            }
+                            if (reader["Intitule source"] != DBNull.Value)
+                            {
+                                Corresp.Libelle_Ancien_Code = (string)reader["Intitule source"];
+                                Corresp.Canonical = fonc.CanonicalString(Corresp.Libelle_Ancien_Code);
+                            }
+                            if (reader["Code référentiel"] != DBNull.Value)
+                            {
+                                Corresp.Nouveau_Code = (string)reader["Code référentiel"];
+                            }
+                            if (reader["Intitulé du référentiel"] != DBNull.Value)
+                            {
+                                Corresp.Libelle_Nouveau_Code = (string)reader["Intitulé du référentiel"];
+                                //Console.WriteLine("Je suis avant le canonical");
+                                //Console.WriteLine("Canonical : " + fonc.CanonicalString(Corresp.Libelle_Nouveau_Code));
+                            }
+                            if (reader["NomRef"] != DBNull.Value)
+                            {
+                                Corresp.NomRef = (string)reader["NomRef"];
+                            }
+                            if (reader["Occurrence"] != DBNull.Value)
+                            {
+                                Corresp.Occurrence = Convert.ToInt32(reader["Occurrence"]);
+                            }
+                            if (reader["TypeRef"] != DBNull.Value)
+                            {
+                                Corresp.TypeRef = (string)reader["TypeRef"];
+                            }
+                            if (reader["Cpl"] != DBNull.Value && (string)reader["Cpl"] != "")
+                            {
+                                Corresp.Cpl = (string)reader["Cpl"];
+                            }
+                            else
+                            {
+                                Corresp.Cpl = "0";
+                            }
+                            if (reader["Cpl1"] != DBNull.Value && (string)reader["Cpl1"] != "")
+                            {
+                                Corresp.Cpl1 = (string)reader["Cpl1"];
+                            }
+                            else
+                            {
+                                Corresp.Cpl1 = "0";
+                            }
+                            if (reader["Cpl2"] != DBNull.Value && (string)reader["Cpl2"] != "")
+                            {
+                                Corresp.Cpl2 = (string)reader["Cpl2"];
+                            }
+                            else
+                            {
+                                Corresp.Cpl2 = "0";
+                            }
+                            if (reader["FlagPreventiel"] != DBNull.Value)
+                            {
+                                Corresp.FlagReferentiel = Convert.ToInt32(reader["FlagPreventiel"]);
+                            }
+                            /*if (reader["Code référentiel"].ToString().Trim() == "APTITU_06" && reader["FlagPreventiel"] != DBNull.Value)
+                            {
+                                Console.WriteLine("Motif Aptitude");
+                                Console.WriteLine(Convert.ToInt32(reader["FlagPreventiel"]));
+                            }*/
+                            if (reader["Code référentiel"] != DBNull.Value && (string)reader["Code référentiel"] != "" && reader["FlagPreventiel"] != DBNull.Value && Convert.ToInt32(reader["FlagPreventiel"]) == 0)
+                            {
+                                /*if(reader["Code référentiel"] != DBNull.Value && (string)reader["Code référentiel"] != "" && reader["FlagPreventiel"] != DBNull.Value && Convert.ToInt32(reader["FlagPreventiel"]) == 0 
+                                    && reader["Code référentiel"].ToString().Trim() == "APTITU_06")
+                                {
+                                    Console.WriteLine("Motif Aptitude");
+                                }*/
+                                if (NouveauCodeEstDansLeReferentiel((string)reader["Code référentiel"], Referentiel, Corresp.Cpl, Corresp.Cpl1, Corresp.Cpl2, (string)reader["TypeRef"]))
+                                {
+                                    Corresp.FlagReferentiel = 1;
+                                    ListCorrespFlagPreventiel.Add(Corresp);
+                                    //UpdateSQLITE_TBCorrespondance_FlagPreventiel(Corresp);
+                                }
+                            }
+                            if (reader["NouveauCodeInactif"] != DBNull.Value)
+                            {
+                                Corresp.NouveauCodeInactif = (bool)reader["NouveauCodeInactif"];
+                            }
+                            //Console.WriteLine("Je suis avant le ADD");
+                            ListCorresp.Add(Corresp);
+                            //Console.WriteLine("Je suis après le ADD");
+                        }
+                        //con.sql_con.Close();
+                        for (int i = 0; i < ListCorrespFlagPreventiel.Count; i++)
+                        {
+                            try
+                            {
+                                UpdateSQLITE_TBCorrespondance_FlagPreventiel(ListCorrespFlagPreventiel[i]);
+                            }
+                            catch (Exception e)
+                            {
+                                Console.WriteLine("ListCorrespFlagPreventiel[" + i + "] : " + ListCorrespFlagPreventiel[i]);
+                                Console.WriteLine("Erreur : " + e.Message);
+                                throw;
+                            }
+
+                        }
+                        Init.TableCorrespondanceSansModification = ListCorresp;
+                        con.sql_con.Close();
+                        return (ListCorresp);
+                    }
+                       
                 }
+                   
+            }
+
                
-                //Console.WriteLine("Je suis avant le ADD");
-                ListCorresp.Add(Corresp);
-                //Console.WriteLine("Je suis après le ADD");
-            }
-            for (int i = 0; i < ListCorrespFlagPreventiel.Count; i++)
-            {
-                try
-                {
-                    UpdateSQLITE_TBCorrespondance_FlagPreventiel(ListCorrespFlagPreventiel[i]);
-                }
-                catch(Exception e)
-                {
-                    Console.WriteLine("ListCorrespFlagPreventiel[" + i + "] : " + ListCorrespFlagPreventiel[i]);
-                    Console.WriteLine("Erreur : " + e.Message);
-                    throw;
-                }
-                
-            }
-            Init.TableCorrespondanceSansModification = ListCorresp;
-            return (ListCorresp);
         }
 
         public bool NouveauCodeEstDansLeReferentiel(string Nouveau_code, List<Referentiel> Referentiel, string Cpl, string Cpl1, string Cpl2, string TypeRef)
@@ -225,6 +239,7 @@ namespace RecodageList.DAL
 
         public void InsertIntoSQLITE_TBCorrespondance(List<Correspondance> Corresp)
         {
+            ConnexionSQLITE con = new ConnexionSQLITE();
             for (int i=0;i<Corresp.Count;i++)
             {
                 string txtSQLQuery = "insert into  TB$S_CorrespondanceItem (Type_Item,Ancien_Code,Libelle_Ancien_Code,AncienCodeActif,Nouveau_Code,Libelle_Nouveau_Code,Occurrence,NomSchema,DateRecensement,DateMAJ,TypeRecodage,NouveauCodeInactif,UtilisateurCreation,TypeRef,NomRef,Cpl,Cpl1,Cpl2) " +
@@ -252,6 +267,7 @@ namespace RecodageList.DAL
 
         public void UpdateSQLITE_TBCorrespondance(Correspondance ligneAUpdater)
         {
+            ConnexionSQLITE con = new ConnexionSQLITE();
             string txtSQLQuery = " update TB$S_CorrespondanceItem " +
                 " set Nouveau_code = '" + ligneAUpdater.Nouveau_Code.Replace("'","''") + "'," +
                 " Libelle_nouveau_code = '" + ligneAUpdater.Libelle_Nouveau_Code.Replace("'", "''") + "',"+
@@ -260,10 +276,12 @@ namespace RecodageList.DAL
                 //" Libelle_ancien_code = '" + ligneAUpdater.Libelle_Ancien_Code.Replace("'", "''") + "' and " +
                 " NomRef = '" + ligneAUpdater.NomRef + "'";
             con.ExecuteQuery(txtSQLQuery);
+            con.Dispose();
         }
 
         public void UpdateSQLITE_TBCorrespondance_FlagPreventiel(Correspondance ligneAUpdater)
         {
+            ConnexionSQLITE con = new ConnexionSQLITE();
             try
             {
                 string txtSQLQuery = " update TB$S_CorrespondanceItem " +
@@ -272,6 +290,8 @@ namespace RecodageList.DAL
                 //" Libelle_ancien_code = '" + ligneAUpdater.Libelle_Ancien_Code.Replace("'", "''") + "' and " +
                 " NomRef = '" + ligneAUpdater.NomRef + "'";
                 con.ExecuteQuery(txtSQLQuery);
+                //con.Dispose();
+                //con.sql_con.Close();
             }
             catch(Exception e)
             {
@@ -369,8 +389,10 @@ namespace RecodageList.DAL
 
         public void ClearTable()
         {
+            ConnexionSQLITE con = new ConnexionSQLITE();
             string txtSQLQuery = "delete from TB$S_CorrespondanceItem";
             con.ExecuteQuery(txtSQLQuery);
+            con.Dispose();
         }
 
         public List<Correspondance> ObtenirListeCorrespondance_lambda()
@@ -402,6 +424,7 @@ namespace RecodageList.DAL
                 try
                 {
                     connexion.ExecuteQuery(sql);
+                    connexion.Dispose();
                 }
                 catch (System.Data.SQLite.SQLiteException e)
                 {
@@ -409,6 +432,18 @@ namespace RecodageList.DAL
                 }
             }
         }
+
+
+
+      
+
+            internal delegate void UpdateProgressDelegate(int ProgressPercentage);
+
+        internal event UpdateProgressDelegate UpdateProgress_admin;
+
+        internal delegate void UpdateProgressTeminateDelegate(bool terminate);
+
+        internal event UpdateProgressTeminateDelegate UpdateProgress_admin_Terminate;
 
         public void ExporteCorrespondance()
         {
@@ -474,7 +509,11 @@ namespace RecodageList.DAL
                         con.ExecuteQuery(sqlupdate);
                     }
                 }
+                UpdateProgress_admin(i);
+                Application.DoEvents();
             }
+            UpdateProgress_admin_Terminate(true);
+            Application.DoEvents();
         }
 
     }

@@ -17,8 +17,8 @@ namespace RecodageList.DAL
 
         public void SetConnection()
         {
-            Console.WriteLine("ConfigurationManager.AppSettings['SQLServerConnectionString']" + ConfigurationManager.AppSettings["SQLServerConnectionString"]);
-            sql_con = new SqlConnection(ConfigurationManager.AppSettings["SQLServerConnectionString"]);
+            Console.WriteLine("InfoSqlServer.SQLServerConnectionString" + InfoSqlServer.SQLServerConnectionString);
+            sql_con = new SqlConnection(InfoSqlServer.SQLServerConnectionString);
         }
 
         public void ExecuteQuery(string txtQuery)

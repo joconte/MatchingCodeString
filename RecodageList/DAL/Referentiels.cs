@@ -9,86 +9,104 @@ namespace RecodageList.DAL
 {
     class Referentiels
     {
-        ConnexionSQLITE con = new ConnexionSQLITE();
+        
         public List<Referentiel> ObtenirListeReferentiel_SQLITE()
         {
-            con.SetConnection();
-            con.sql_con.Open();
+            List<Referentiel> ListRef = new List<Referentiel>();
+            using (ConnexionSQLITE con = new ConnexionSQLITE())
+            {
+                con.SetConnection();
+                con.sql_con.Open();
+                string CommandText = "select * from TB$S_PREVReferentiel";
+                using (con.sql_cmd = new SQLiteCommand(CommandText, con.sql_con))
+                {
+                    using (SQLiteDataReader reader = con.sql_cmd.ExecuteReader())
+                    {
+                        
+                        Fonc fonc = new Fonc();
+                        while (reader.Read())
+                        {
+                            Referentiel Ref = new Referentiel();
+                            if (reader["Type"] != DBNull.Value)
+                            {
+                                Ref.Type = (string)reader["Type"];
+                            }
+                            if (reader["TypeItem"] != DBNull.Value)
+                            {
+                                Ref.TypeItem = (string)reader["TypeItem"];
+                            }
+                            if (reader["Code"] != DBNull.Value)
+                            {
+                                Ref.Code = (string)reader["Code"];
+                            }
+                            if (reader["Lib"] != DBNull.Value && (string)reader["Lib"] != "")
+                            {
+                                Ref.Lib = (string)reader["Lib"];
+                                Ref.Canonical = fonc.CanonicalString((string)reader["Lib"]);
+                            }
+                            if (reader["CodeOrigine"] != DBNull.Value)
+                            {
+                                Ref.CodeOrigine = (string)reader["CodeOrigine"];
+                            }
+                            if (reader["InActif"] != DBNull.Value)
+                            {
+                                Ref.InActif = Convert.ToBoolean(reader["InActif"]);
+                            }
+                            //Console.WriteLine(reader["InActif"]);
+                            //Ref.InActif = Convert.ToBoolean(Convert.ToString(reader["InActif"]));
+                            if (reader["Cpl"] != DBNull.Value && (string)reader["Cpl"] != "")
+                            {
+                                Ref.Cpl = (string)reader["Cpl"];
+                            }
+                            else
+                            {
+                                Ref.Cpl = "0";
+                            }
+                            if (reader["Cpl1"] != DBNull.Value && (string)reader["Cpl1"] != "")
+                            {
+                                Ref.Cpl1 = (string)reader["Cpl1"];
+                            }
+                            else
+                            {
+                                Ref.Cpl1 = "0";
+                            }
+                            if (reader["Cpl2"] != DBNull.Value && (string)reader["Cpl2"] != "")
+                            {
+                                Ref.Cpl2 = (string)reader["Cpl2"];
+                            }
+                            else
+                            {
+                                Ref.Cpl2 = "0";
+                            }
+                            if (reader["Cpl3"] != DBNull.Value && (string)reader["Cpl3"] != "")
+                            {
+                                Ref.Cpl3 = (string)reader["Cpl3"];
+                            }
+                            else
+                            {
+                                Ref.Cpl3 = "0";
+                            }
+                            if (reader["DateFinValidite"] != DBNull.Value)
+                            {
+                                Ref.DateFinValidite = (string)reader["DateFinValidite"];
+                            }
+                            ListRef.Add(Ref);
+                        }
+                        con.sql_con.Close();
+                        con.sql_con.Dispose();
+                    }
+                }
+            }
+                
+            
             //sql_cmd = sql_con.CreateCommand();
             //string CommandText = "select Type_Item, Ancien_Code, Libelle_Ancien_Code,AncienCodeActif,Nouveau_Code,Libelle_Nouveau_Code,Code_utilise,NomSchema,DateRecensement,DateMAJ,TypeRecodage,NouveauCodeInactif,UtilisateurCreation,TypeRef,NomRef,Cpl,Cpl1,Cpl2,Occurrence from TB$S_CorrespondanceItem";
-            string CommandText = "select * from TB$S_PREVReferentiel";// where TypeItem !='PersonnePhysique'";
+            // where TypeItem !='PersonnePhysique'";
             //string CommandText = "select Type,TypeItem,Code,Lib,CodeOrigine,InActif,Cpl,Cpl1,Cpl2,Cpl3,DateFinValidite from TB$S_PREVReferentiel where (Type!='CTRL' and Cpl!='0') ";
-            con.sql_cmd = new SQLiteCommand(CommandText, con.sql_con);
-            SQLiteDataReader reader = con.sql_cmd.ExecuteReader();
+            
+            
             //DB = new SQLiteDataAdapter(CommandText, sql_con);
-            List<Referentiel> ListRef = new List<Referentiel>();
-            while (reader.Read())
-            {
-                Referentiel Ref = new Referentiel();
-                if (reader["Type"] != DBNull.Value)
-                {
-                    Ref.Type = (string)reader["Type"];
-                }
-                if (reader["TypeItem"] != DBNull.Value)
-                {
-                    Ref.TypeItem = (string)reader["TypeItem"];
-                }
-                if (reader["Code"] != DBNull.Value)
-                {
-                    Ref.Code = (string)reader["Code"];
-                }
-                if (reader["Lib"] != DBNull.Value)
-                {
-                    Ref.Lib = (string)reader["Lib"];
-                }
-                if (reader["CodeOrigine"] != DBNull.Value)
-                {
-                    Ref.CodeOrigine = (string)reader["CodeOrigine"];
-                }
-                if (reader["InActif"] != DBNull.Value)
-                {
-                    Ref.InActif = Convert.ToBoolean(reader["InActif"]);
-                }
-                //Console.WriteLine(reader["InActif"]);
-                //Ref.InActif = Convert.ToBoolean(Convert.ToString(reader["InActif"]));
-                if (reader["Cpl"] != DBNull.Value && (string)reader["Cpl"]!="")
-                {
-                    Ref.Cpl = (string)reader["Cpl"];
-                }
-                else
-                {
-                    Ref.Cpl = "0";
-                }
-                if (reader["Cpl1"] != DBNull.Value && (string)reader["Cpl1"] != "")
-                {
-                    Ref.Cpl1 = (string)reader["Cpl1"];
-                }
-                else
-                {
-                    Ref.Cpl1 = "0";
-                }
-                if (reader["Cpl2"] != DBNull.Value && (string)reader["Cpl2"] != "")
-                {
-                    Ref.Cpl2 = (string)reader["Cpl2"];
-                }
-                else
-                {
-                    Ref.Cpl2 = "0";
-                }
-                if (reader["Cpl3"] != DBNull.Value && (string)reader["Cpl3"] != "")
-                {
-                    Ref.Cpl3 = (string)reader["Cpl3"];
-                }
-                else
-                {
-                    Ref.Cpl3 = "0";
-                }
-                if (reader["DateFinValidite"] != DBNull.Value)
-                {
-                    Ref.DateFinValidite = (string)reader["DateFinValidite"];
-                }
-                ListRef.Add(Ref);
-            }
+           
             return (ListRef);
         }
 

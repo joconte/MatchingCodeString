@@ -103,7 +103,7 @@ namespace Converter
             // btnStart
             // 
             this.btnStart.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnStart.Location = new System.Drawing.Point(365, 219);
+            this.btnStart.Location = new System.Drawing.Point(365, 140);
             this.btnStart.Name = "btnStart";
             this.btnStart.Size = new System.Drawing.Size(198, 23);
             this.btnStart.TabIndex = 17;
@@ -150,7 +150,7 @@ namespace Converter
             // pbrProgress
             // 
             this.pbrProgress.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.pbrProgress.Location = new System.Drawing.Point(12, 198);
+            this.pbrProgress.Location = new System.Drawing.Point(12, 116);
             this.pbrProgress.Name = "pbrProgress";
             this.pbrProgress.Size = new System.Drawing.Size(652, 18);
             this.pbrProgress.TabIndex = 16;
@@ -158,7 +158,7 @@ namespace Converter
             // lblMessage
             // 
             this.lblMessage.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.lblMessage.Location = new System.Drawing.Point(12, 180);
+            this.lblMessage.Location = new System.Drawing.Point(12, 101);
             this.lblMessage.Name = "lblMessage";
             this.lblMessage.Size = new System.Drawing.Size(529, 13);
             this.lblMessage.TabIndex = 15;
@@ -167,7 +167,7 @@ namespace Converter
             // btnCancel
             // 
             this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnCancel.Location = new System.Drawing.Point(569, 219);
+            this.btnCancel.Location = new System.Drawing.Point(569, 140);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(95, 23);
             this.btnCancel.TabIndex = 18;
@@ -270,7 +270,7 @@ namespace Converter
             // 
             // button_save_export_database
             // 
-            this.button_save_export_database.Location = new System.Drawing.Point(25, 219);
+            this.button_save_export_database.Location = new System.Drawing.Point(31, 140);
             this.button_save_export_database.Name = "button_save_export_database";
             this.button_save_export_database.Size = new System.Drawing.Size(220, 23);
             this.button_save_export_database.TabIndex = 21;
@@ -282,7 +282,7 @@ namespace Converter
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(676, 245);
+            this.ClientSize = new System.Drawing.Size(676, 166);
             this.Controls.Add(this.button_save_export_database);
             this.Controls.Add(this.cbxCreateViews);
             this.Controls.Add(this.cbxTriggers);

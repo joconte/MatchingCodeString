@@ -12,6 +12,7 @@ using RecodageList.DAL;
 using RecodageList.Fonction;
 using Converter;
 using DbAccess;
+using System.IO;
 
 namespace RecodageList
 {
@@ -42,6 +43,7 @@ namespace RecodageList
         */
         public void InitTable()
         {
+            /*
             if(InfoSqlServer.SQLServerConnectionString!=null)
             {
                 Console.WriteLine("InfoSqlServer.SQLServerConnectionString : " + InfoSqlServer.SQLServerConnectionString);
@@ -51,36 +53,106 @@ namespace RecodageList
                 config.Save(ConfigurationSaveMode.Modified);
                 ConfigurationManager.RefreshSection("appSettings");
             }
+            */
 
-            progressBar_chargementlogiciel.Maximum = 6;
-            progressBar_chargementlogiciel.Value = 0;
-            Referentiels RefObject = new Referentiels();
-            Init.TableReferentiel = RefObject.ObtenirListeReferentiel_SQLITE();
-            progressBar_chargementlogiciel.Value++;
-            Init.TableReferentielFiltre = new List<Referentiel>();
-            progressBar_chargementlogiciel.Value++;
-            Correspondances CorrObject = new Correspondances();
-            Init.TableCorrespondance = CorrObject.ObtenirListeCorrespondance_SQLITE(Init.TableReferentiel);
-            progressBar_chargementlogiciel.Value++;
-            Init.TableCorrespondanceFiltre = new List<Correspondance>();
-            progressBar_chargementlogiciel.Value++;
-            ComboBoxFiltres ComboObject = new ComboBoxFiltres();
-            Init.ComboBoxFiltre = ComboObject.ObtenirComboBoxFiltre();
-            progressBar_chargementlogiciel.Value++;
+            if(File.Exists(System.IO.Path.GetDirectoryName(Application.ExecutablePath) + "\\PREVTGXV7.db"))
+            {
+                progressBar_admin.Maximum = 6;
+                progressBar_admin.Value = 0;
+                Referentiels RefObject = new Referentiels();
+                Init.TableReferentiel = RefObject.ObtenirListeReferentiel_SQLITE();
+                progressBar_admin.Value++;
+                Init.TableReferentielFiltre = new List<Referentiel>();
+                progressBar_admin.Value++;
+                Correspondances CorrObject = new Correspondances();
+                Init.TableCorrespondance = CorrObject.ObtenirListeCorrespondance_SQLITE(Init.TableReferentiel);
+                progressBar_admin.Value++;
+                Init.TableCorrespondanceFiltre = new List<Correspondance>();
+                progressBar_admin.Value++;
+                ComboBoxFiltres ComboObject = new ComboBoxFiltres();
+                Init.ComboBoxFiltre = ComboObject.ObtenirComboBoxFiltre();
+                progressBar_admin.Value++;
+            }
+
         }
-
+        Correspondances CorrObject = new Correspondances();
         public Form1()
         {
             InitializeComponent();
+            
+            CorrObject.UpdateProgress_admin += UpdateProgress_admin;
+            CorrObject.UpdateProgress_admin_Terminate += UpdateProgress_admin_Teminate;
             //InitTable();
             //InitDatagridSaisie();
             //InitDatagridReferentiel();
             //InitComboBoxFiltre();
             //TestCanonique();
-            
+
         }
-        
-        
+
+        //On crée notre delagate.
+        public delegate void MontrerProgres(int valeur);
+        public delegate void MontrerProgresTerminate(bool terminate);
+
+       
+        private void UpdateProgress_rapprochement(int value)
+        {
+            try
+            {
+                //On invoque le delegate pour qu'il effectue la tâche sur le temps
+                //de l'autre thread.
+                Invoke((MontrerProgres)Progres_rapprochement, value);
+            }
+            catch (Exception ex) { return; }
+
+            //progressBar_admin.Value = value;
+
+        }
+
+        private void UpdateProgress_admin(int value)
+        {
+            try
+            {
+                //On invoque le delegate pour qu'il effectue la tâche sur le temps
+                //de l'autre thread.
+                Invoke((MontrerProgres)Progres_admin, value);
+            }
+            catch (Exception ex) { return; }
+
+            //progressBar_admin.Value = value;
+
+        }
+
+
+        private void UpdateProgress_admin_Teminate(bool terminate)
+        {
+            try
+            {
+                Invoke((MontrerProgresTerminate)ProgresTerminate, terminate);
+                Invoke((MontrerProgres)Progres_admin, 0);
+            }
+            catch(Exception ex) { return; }
+        }
+
+        public void Progres_rapprochement(int valeur)
+        {
+            //On met la valeur dans le contrôle Windows Forms.
+            progressBar_rapprochement.Value = valeur;
+        }
+        public void Progres_admin(int valeur)
+        {
+            //On met la valeur dans le contrôle Windows Forms.
+            progressBar_admin.Value = valeur;
+        }
+        public void ProgresTerminate(bool terminate)
+        {
+            //On met la valeur dans le contrôle Windows Forms.
+            if(terminate)
+            {
+                MessageBox.Show("Export terminé");
+            }
+        }
+
         /*
         public void InitFlagPreventielTbCorrespondance()
         {
@@ -148,6 +220,22 @@ namespace RecodageList
             dataGridView_saisie.Columns["Nouveau_Code"].HeaderText = "Code Référentiel";
             dataGridView_saisie.Columns["Libelle_Nouveau_Code"].HeaderText = "Intitulé Référentiel";
             dataGridView_saisie.Columns["NouveauCodeInactif"].HeaderText = "Inactif";
+
+            //dataGridView_saisie.AutoResizeColumns();
+
+            // Configure the details DataGridView so that its columns automatically
+            // adjust their widths when the data changes.
+            //dataGridView_saisie.AutoSizeColumnsMode =
+              //  DataGridViewAutoSizeColumnsMode.AllCells;
+
+           //if(dataGridView_saisie.Columns["Libelle_Ancien_Code"].Width > 300)
+            //{
+                dataGridView_saisie.Columns["Libelle_Ancien_Code"].Width = 300;
+            //}
+            //if (dataGridView_saisie.Columns["Libelle_Nouveau_Code"].Width > 300)
+            //{
+                dataGridView_saisie.Columns["Libelle_Nouveau_Code"].Width = 300;
+            //}
         }
         /*
         public void InitColorSaisie()
@@ -292,10 +380,24 @@ namespace RecodageList
             dataGridView_ref.Columns["Cpl2"].Visible = false;
             dataGridView_ref.Columns["Cpl3"].Visible = false;
             dataGridView_ref.Columns["DateFinValidite"].Visible = false;
+            dataGridView_ref.Columns["Canonical"].Visible = false;
 
             dataGridView_ref.Columns["Code"].HeaderText = "Code Référentiel";
             dataGridView_ref.Columns["Lib"].HeaderText = "Intitulé Référentiel";
             dataGridView_ref.Columns["InActif"].HeaderText = "Inactif";
+
+            //dataGridView_ref.AutoResizeColumns();
+
+            // Configure the details DataGridView so that its columns automatically
+            // adjust their widths when the data changes.
+            //dataGridView_ref.AutoSizeColumnsMode =
+                //DataGridViewAutoSizeColumnsMode.AllCells;
+            //if (dataGridView_ref.Columns["Lib"].Width > 300)
+            //{
+                dataGridView_ref.Columns["Lib"].Width = dataGridView_saisie.Columns["Libelle_Ancien_Code"].Width + dataGridView_saisie.Columns["Nouveau_Code"].Width + dataGridView_saisie.Columns["Libelle_Nouveau_Code"].Width;
+            //}
+
+
         }
         /*
         public void CreationAffichageThread()
@@ -326,7 +428,7 @@ namespace RecodageList
             comboBox_filtre.DataSource = new BindingSource(Init.ComboBoxFiltre, null);
             comboBox_filtre.DisplayMember = "NomRef";
             comboBox_filtre.ValueMember = "Cpl";
-            progressBar_chargementlogiciel.Value++;
+            progressBar_admin.Value++;
             //MessageBox.Show();
         }
         
@@ -412,38 +514,40 @@ namespace RecodageList
             //Console.WriteLine("comboBox_filtre.SelectedText : " + comboBox_filtre.SelectedText);
             //Console.WriteLine("comboBox_filtre.comboBox_filtre.SelectedItem.ToString() : " + comboBox_filtre.SelectedItem.ToString());
 
-            Correspondances Corr = new Correspondances();
-            //Console.WriteLine(dataGridView_saisie.DataMember);
-            //List<Correspondance> TableCorresp = Corr.ObtenirListeCorrespondance_SQLITE();
-            //List<Correspondance> CorrFiltered = new List<Correspondance>();
-            Console.WriteLine(comboBox_filtre.ValueMember);
-            Console.WriteLine("(string)comboBox_filtre.SelectedValue : " + (string)comboBox_filtre.SelectedValue);
+            if((string)comboBox_filtre.SelectedValue!=null)
+            {
+                Correspondances Corr = new Correspondances();
+                //Console.WriteLine(dataGridView_saisie.DataMember);
+                //List<Correspondance> TableCorresp = Corr.ObtenirListeCorrespondance_SQLITE();
+                //List<Correspondance> CorrFiltered = new List<Correspondance>();
+                Console.WriteLine(comboBox_filtre.ValueMember);
+                Console.WriteLine("(string)comboBox_filtre.SelectedValue : " + (string)comboBox_filtre.SelectedValue);
 
-            //Filtre la table de corresp globale par CPL
-            Init.TableCorrespondanceFiltre = Corr.FiltrerListeCorrespondance_parCPL(Init.TableCorrespondance, (string)comboBox_filtre.SelectedValue);
+                //Filtre la table de corresp globale par CPL
+                Init.TableCorrespondanceFiltre = Corr.FiltrerListeCorrespondance_parCPL(Init.TableCorrespondance, (string)comboBox_filtre.SelectedValue);
 
-            //Créé une nouvelle liste de type affichage qui va etre affectée de la liste ci-dessus (liste globale filtrée).
-            //CorrespondancesAffichages CorrAffichage = new CorrespondancesAffichages();
-            //List<CorrespondanceAffichage> TableCorrespAffichage = CorrAffichage.ObtenirListeCorrespondanceAffichage(Init.TableCorrespondanceFiltre);
+                //Créé une nouvelle liste de type affichage qui va etre affectée de la liste ci-dessus (liste globale filtrée).
+                //CorrespondancesAffichages CorrAffichage = new CorrespondancesAffichages();
+                //List<CorrespondanceAffichage> TableCorrespAffichage = CorrAffichage.ObtenirListeCorrespondanceAffichage(Init.TableCorrespondanceFiltre);
 
-            //Réaffecte le datagrid à la liste filtrée 
-            var source = new BindingSource();
-            source.DataSource = Init.TableCorrespondanceFiltre;
-            dataGridView_saisie.DataSource = source;
-            InitStructSaisie();
-            InitColorSaisie();
+                //Réaffecte le datagrid à la liste filtrée 
+                var source = new BindingSource();
+                source.DataSource = Init.TableCorrespondanceFiltre;
+                dataGridView_saisie.DataSource = source;
+                InitStructSaisie();
+                InitColorSaisie();
 
-            Referentiels Ref = new Referentiels();
-            //List<Referentiel> TableRef = Ref.ObtenirListeReferentiel_SQLITE();
-            Console.WriteLine("(string)comboBox_filtre.SelectedValue : " + (string)comboBox_filtre.SelectedValue);
-            Init.TableReferentielFiltre = Ref.FiltrerListeReferentiel_parCPL(Init.TableReferentiel, (string)comboBox_filtre.SelectedValue);
-            //ReferentielsAffichages RefAffichage = new ReferentielsAffichages();
-            //List<ReferentielAffichage> TableRefAffichage = RefAffichage.ObtenirListeReferentielAffichage(Init.TableReferentielFiltre);
-            var source_ref = new BindingSource();
-            source_ref.DataSource = Init.TableReferentielFiltre;
-            dataGridView_ref.DataSource = source_ref;
-            InitStructReferentiel();
-
+                Referentiels Ref = new Referentiels();
+                //List<Referentiel> TableRef = Ref.ObtenirListeReferentiel_SQLITE();
+                Console.WriteLine("(string)comboBox_filtre.SelectedValue : " + (string)comboBox_filtre.SelectedValue);
+                Init.TableReferentielFiltre = Ref.FiltrerListeReferentiel_parCPL(Init.TableReferentiel, (string)comboBox_filtre.SelectedValue);
+                //ReferentielsAffichages RefAffichage = new ReferentielsAffichages();
+                //List<ReferentielAffichage> TableRefAffichage = RefAffichage.ObtenirListeReferentielAffichage(Init.TableReferentielFiltre);
+                var source_ref = new BindingSource();
+                source_ref.DataSource = Init.TableReferentielFiltre;
+                dataGridView_ref.DataSource = source_ref;
+                InitStructReferentiel();
+            }
         }
 
   
@@ -456,6 +560,7 @@ namespace RecodageList
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            ChargementTableEnMemoire();
             //InitDatagridSaisie();
             //Thread th = new Thread(CreationAffichageThread);
             //th.Start();
@@ -878,7 +983,7 @@ namespace RecodageList
             TableRefResultatExamen = RefObject.FiltrerListeResultatExamenReferentielParExamen(TableRef, ligne_exam_nouveau_code.Nouveau_Code);
             */
             //Init.TableCorrespondanceFiltre = TableCorresp;
-            progressBar1.Maximum = Init.TableCorrespondanceFiltre.Count - 1;
+            progressBar_rapprochement.Maximum = Init.TableCorrespondanceFiltre.Count - 1;
             if ((string)comboBox_filtre.SelectedValue=="135|0|0|NOMEN")
             {
                 //string[] examen_ancien_code = dataGridView_saisie.CurrentRow.Cells[1].Value.ToString().Split('#');
@@ -905,7 +1010,7 @@ namespace RecodageList
                                 */
                             }
 
-                            if (Init.TableCorrespondanceFiltre[i].Canonical == fonc.CanonicalString(Init.TableReferentielFiltre[j].Lib)
+                            if (Init.TableCorrespondanceFiltre[i].Canonical == Init.TableReferentielFiltre[j].Canonical
                                 && Init.TableCorrespondanceFiltre[i].Cpl == Init.TableReferentielFiltre[j].Cpl
                                 && Init.TableCorrespondanceFiltre[i].Cpl1 == Init.TableReferentielFiltre[j].Cpl1
                                 && Init.TableCorrespondanceFiltre[i].Cpl2 == Init.TableReferentielFiltre[j].Cpl2
@@ -934,7 +1039,7 @@ namespace RecodageList
                                 dataGridView_saisie.Rows[i].Cells[20].Value = Init.TableCorrespondanceFiltre[i].FlagReferentiel;
                                 nbItemRapprochés++;
                             }
-                            else if (Init.TableCorrespondanceFiltre[i].Canonical == fonc.CanonicalString(Init.TableReferentielFiltre[j].Lib)
+                            else if (Init.TableCorrespondanceFiltre[i].Canonical == Init.TableReferentielFiltre[j].Canonical
                                 && Init.TableCorrespondanceFiltre[i].Cpl == Init.TableReferentielFiltre[j].Cpl
                                 //&& Init.TableCorrespondanceFiltre[i].Cpl1 == Init.TableReferentielFiltre[j].Cpl1
                                 //&& Init.TableCorrespondanceFiltre[i].Cpl2 == Init.TableReferentielFiltre[j].Cpl2
@@ -953,7 +1058,7 @@ namespace RecodageList
                                 TableRefResultatExamen = RefObject.FiltrerListeResultatExamenReferentielParExamen(Init.TableReferentiel, ligne_exam_nouveau_code.Nouveau_Code);
                                 for(int k=0;k<TableRefResultatExamen.Count;k++)
                                 {
-                                    if(fonc.CanonicalString(TableRefResultatExamen[k].Lib)== Init.TableCorrespondanceFiltre[i].Canonical)
+                                    if(TableRefResultatExamen[k].Canonical== Init.TableCorrespondanceFiltre[i].Canonical)
                                     {
                                         Init.TableCorrespondanceFiltre[i].Nouveau_Code = TableRefResultatExamen[k].Code;
                                         Init.TableCorrespondanceFiltre[i].Libelle_Nouveau_Code = TableRefResultatExamen[k].Lib;
@@ -978,7 +1083,8 @@ namespace RecodageList
                             }
                         }
                     }
-                    progressBar1.Value = i;
+                    UpdateProgress_rapprochement(i);
+                    //progressBar_rapprochement.Value = i;
                     Console.WriteLine("Avancement : " + i + "/" + Init.TableCorrespondanceFiltre.Count);
                 }
             }
@@ -1008,7 +1114,7 @@ namespace RecodageList
                                 */
                             }
 
-                            if (Init.TableCorrespondanceFiltre[i].Canonical == fonc.CanonicalString(Init.TableReferentielFiltre[j].Lib)
+                            if (Init.TableCorrespondanceFiltre[i].Canonical == Init.TableReferentielFiltre[j].Canonical
                                 && Init.TableCorrespondanceFiltre[i].Cpl == Init.TableReferentielFiltre[j].Cpl
                                 && Init.TableCorrespondanceFiltre[i].Cpl1 == Init.TableReferentielFiltre[j].Cpl1
                                 && Init.TableCorrespondanceFiltre[i].Cpl2 == Init.TableReferentielFiltre[j].Cpl2
@@ -1037,7 +1143,7 @@ namespace RecodageList
                                 dataGridView_saisie.Rows[i].Cells[20].Value = Init.TableCorrespondanceFiltre[i].FlagReferentiel;
                                 nbItemRapprochés++;
                             }
-                            else if (Init.TableCorrespondanceFiltre[i].Canonical == fonc.CanonicalString(Init.TableReferentielFiltre[j].Lib)
+                            else if (Init.TableCorrespondanceFiltre[i].Canonical == Init.TableReferentielFiltre[j].Canonical
                                 && Init.TableCorrespondanceFiltre[i].Cpl == Init.TableReferentielFiltre[j].Cpl
                                 //&& Init.TableCorrespondanceFiltre[i].Cpl1 == Init.TableReferentielFiltre[j].Cpl1
                                 //&& Init.TableCorrespondanceFiltre[i].Cpl2 == Init.TableReferentielFiltre[j].Cpl2
@@ -1056,7 +1162,7 @@ namespace RecodageList
                                 TableProtocoleVaccinal = RefObject.FiltrerListeResultatExamenReferentielParExamen(Init.TableReferentiel, ligne_vaccin_nouveau_code.Nouveau_Code);
                                 for (int k = 0; k < TableProtocoleVaccinal.Count; k++)
                                 {
-                                    if (fonc.CanonicalString(TableProtocoleVaccinal[k].Lib) == Init.TableCorrespondanceFiltre[i].Canonical)
+                                    if (TableProtocoleVaccinal[k].Canonical == Init.TableCorrespondanceFiltre[i].Canonical)
                                     {
                                         Init.TableCorrespondanceFiltre[i].Nouveau_Code = TableProtocoleVaccinal[k].Code;
                                         Init.TableCorrespondanceFiltre[i].Libelle_Nouveau_Code = TableProtocoleVaccinal[k].Lib;
@@ -1081,7 +1187,8 @@ namespace RecodageList
                             }
                         }
                     }
-                    progressBar1.Value = i;
+                    UpdateProgress_rapprochement(i);
+                    //progressBar_rapprochement.Value = i;
                     Console.WriteLine("Avancement : " + i + "/" + Init.TableCorrespondanceFiltre.Count);
                 }
             }
@@ -1093,7 +1200,7 @@ namespace RecodageList
                     {
                         for (int j = 0; j < Init.TableReferentielFiltre.Count; j++)
                         {
-                            if (Init.TableCorrespondanceFiltre[i].Canonical == fonc.CanonicalString(Init.TableReferentielFiltre[j].Lib)
+                            if (Init.TableCorrespondanceFiltre[i].Canonical == Init.TableReferentielFiltre[j].Canonical
                                 && Init.TableCorrespondanceFiltre[i].Cpl == Init.TableReferentielFiltre[j].Cpl
                                 && Init.TableCorrespondanceFiltre[i].Cpl1 == Init.TableReferentielFiltre[j].Cpl1
                                 && Init.TableCorrespondanceFiltre[i].Cpl2 == Init.TableReferentielFiltre[j].Cpl2
@@ -1120,7 +1227,8 @@ namespace RecodageList
                             }
                         }
                     }
-                    progressBar1.Value = i;
+                    UpdateProgress_rapprochement(i);
+                    //progressBar_rapprochement.Value = i;
                     Console.WriteLine("Avancement : " + i + "/" + Init.TableCorrespondanceFiltre.Count);
                 }
             }
@@ -1135,7 +1243,7 @@ namespace RecodageList
             InitStructSaisie();
             InitColorSaisie();
             MessageBox.Show("Rapprochement automatique terminé. \r\n" + nbItemRapprochés.ToString() + " code(s) rapproché(s) automatiquement.");
-            progressBar1.Value = 0;
+            progressBar_rapprochement.Value = 0;
             button_deleteRecodage.Enabled = true;
             button_afficherCreationCode.Enabled = true;
             button_affecter.Enabled = true;
@@ -1148,12 +1256,21 @@ namespace RecodageList
 
         private void button_chargement_Click(object sender, EventArgs e)
         {
-            InitTable();
-            InitComboBoxFiltre();
-
-            
+            ChargementTableEnMemoire();
             MessageBox.Show("Chargement terminé.");
-            progressBar_chargementlogiciel.Value = 0;
+            progressBar_admin.Value = 0;
+        }
+
+        public void ChargementTableEnMemoire()
+        {
+            if (File.Exists(System.IO.Path.GetDirectoryName(Application.ExecutablePath) + "\\PREVTGXV7.db"))
+            {
+                InitTable();
+                InitComboBoxFiltre();
+                progressBar_admin.Value = 0;
+
+
+            }
         }
 
         private void button_testsqlserver_Click(object sender, EventArgs e)
@@ -1163,10 +1280,23 @@ namespace RecodageList
             con.ExecuteQuery(test);
         }
 
+        
         private void button_exportCorresp_Click(object sender, EventArgs e)
         {
-            Correspondances CorrObject = new Correspondances();
-            CorrObject.ExporteCorrespondance();
+            progressBar_admin.Maximum = Init.TableCorrespondance.Count;
+            
+            if(InfoSqlServer.SQLServerConnectionString != null)
+            {
+                Thread export = new Thread(CorrObject.ExporteCorrespondance);
+                export.Start();
+                //MessageBox.Show("Export terminé");
+                //progressBar_admin.Value = 0;
+            }
+            else
+            {
+                MessageBox.Show("Veuillez définir la base SQL server export via Param Base");
+            }
+            
         }
 
         private void button_rapprochement_global_Click(object sender, EventArgs e)
@@ -1175,7 +1305,7 @@ namespace RecodageList
 
             int nbItemRapprochés = 0;
 
-            Fonc fonc = new Fonc();
+            //Fonc fonc = new Fonc();
             Correspondances ObjCorr = new Correspondances();
             /*
             string[] examen_ancien_code = dataGridView_saisie.CurrentRow.Cells[1].Value.ToString().Split('#');
@@ -1186,7 +1316,7 @@ namespace RecodageList
             TableRefResultatExamen = RefObject.FiltrerListeResultatExamenReferentielParExamen(TableRef, ligne_exam_nouveau_code.Nouveau_Code);
             */
             //Init.TableCorrespondance = TableCorresp;
-            progressBar1.Maximum = Init.TableCorrespondance.Count - 1;
+            progressBar_rapprochement.Maximum = Init.TableCorrespondance.Count - 1;
             if ((string)comboBox_filtre.SelectedValue == "135|0|0|NOMEN")
             {
                 //string[] examen_ancien_code = dataGridView_saisie.CurrentRow.Cells[1].Value.ToString().Split('#');
@@ -1213,7 +1343,8 @@ namespace RecodageList
                                 */
                             }
 
-                            if (Init.TableCorrespondance[i].Canonical == fonc.CanonicalString(Init.TableReferentiel[j].Lib)
+                            if (Init.TableCorrespondance[i].Canonical != "" && Init.TableReferentiel[i].Canonical != ""
+                                && Init.TableCorrespondance[i].Canonical == Init.TableReferentiel[j].Canonical
                                 && Init.TableCorrespondance[i].Cpl == Init.TableReferentiel[j].Cpl
                                 && Init.TableCorrespondance[i].Cpl1 == Init.TableReferentiel[j].Cpl1
                                 && Init.TableCorrespondance[i].Cpl2 == Init.TableReferentiel[j].Cpl2
@@ -1244,7 +1375,8 @@ namespace RecodageList
                                 */
                                 nbItemRapprochés++;
                             }
-                            else if (Init.TableCorrespondance[i].Canonical == fonc.CanonicalString(Init.TableReferentiel[j].Lib)
+                            else if (Init.TableCorrespondance[i].Canonical != "" && Init.TableReferentiel[i].Canonical != ""
+                                && Init.TableCorrespondance[i].Canonical == Init.TableReferentiel[j].Canonical
                                 && Init.TableCorrespondance[i].Cpl == Init.TableReferentiel[j].Cpl
                                 //&& Init.TableCorrespondance[i].Cpl1 == Init.TableReferentiel[j].Cpl1
                                 //&& Init.TableCorrespondance[i].Cpl2 == Init.TableReferentiel[j].Cpl2
@@ -1263,7 +1395,8 @@ namespace RecodageList
                                 TableRefResultatExamen = RefObject.FiltrerListeResultatExamenReferentielParExamen(Init.TableReferentiel, ligne_exam_nouveau_code.Nouveau_Code);
                                 for (int k = 0; k < TableRefResultatExamen.Count; k++)
                                 {
-                                    if (fonc.CanonicalString(TableRefResultatExamen[k].Lib) == Init.TableCorrespondance[i].Canonical)
+                                    if (Init.TableCorrespondance[i].Canonical != "" && TableRefResultatExamen[k].Canonical != ""
+                                && TableRefResultatExamen[k].Canonical == Init.TableCorrespondance[i].Canonical)
                                     {
                                         Init.TableCorrespondance[i].Nouveau_Code = TableRefResultatExamen[k].Code;
                                         Init.TableCorrespondance[i].Libelle_Nouveau_Code = TableRefResultatExamen[k].Lib;
@@ -1290,8 +1423,9 @@ namespace RecodageList
                             }
                         }
                     }
-                    progressBar1.Value = i;
+                    progressBar_rapprochement.Value = i;
                     Console.WriteLine("Avancement : " + i + "/" + Init.TableCorrespondance.Count);
+                    Thread.Sleep(5);
                 }
             }
             else if ((string)comboBox_filtre.SelectedValue == "141|0|0|NOMEN")
@@ -1320,7 +1454,8 @@ namespace RecodageList
                                 */
                             }
 
-                            if (Init.TableCorrespondance[i].Canonical == fonc.CanonicalString(Init.TableReferentiel[j].Lib)
+                            if (Init.TableCorrespondance[i].Canonical != "" && Init.TableReferentiel[i].Canonical != ""
+                                && Init.TableCorrespondance[i].Canonical == Init.TableReferentiel[j].Canonical
                                 && Init.TableCorrespondance[i].Cpl == Init.TableReferentiel[j].Cpl
                                 && Init.TableCorrespondance[i].Cpl1 == Init.TableReferentiel[j].Cpl1
                                 && Init.TableCorrespondance[i].Cpl2 == Init.TableReferentiel[j].Cpl2
@@ -1351,7 +1486,8 @@ namespace RecodageList
                                 */
                                 nbItemRapprochés++;
                             }
-                            else if (Init.TableCorrespondance[i].Canonical == fonc.CanonicalString(Init.TableReferentiel[j].Lib)
+                            else if (Init.TableCorrespondance[i].Canonical != "" && Init.TableReferentiel[i].Canonical != ""
+                                && Init.TableCorrespondance[i].Canonical == Init.TableReferentiel[j].Canonical
                                 && Init.TableCorrespondance[i].Cpl == Init.TableReferentiel[j].Cpl
                                 //&& Init.TableCorrespondance[i].Cpl1 == Init.TableReferentiel[j].Cpl1
                                 //&& Init.TableCorrespondance[i].Cpl2 == Init.TableReferentiel[j].Cpl2
@@ -1370,7 +1506,8 @@ namespace RecodageList
                                 TableProtocoleVaccinal = RefObject.FiltrerListeResultatExamenReferentielParExamen(Init.TableReferentiel, ligne_vaccin_nouveau_code.Nouveau_Code);
                                 for (int k = 0; k < TableProtocoleVaccinal.Count; k++)
                                 {
-                                    if (fonc.CanonicalString(TableProtocoleVaccinal[k].Lib) == Init.TableCorrespondance[i].Canonical)
+                                    if (Init.TableCorrespondance[i].Canonical != "" && TableProtocoleVaccinal[k].Canonical != ""
+                                && TableProtocoleVaccinal[k].Canonical == Init.TableCorrespondance[i].Canonical)
                                     {
                                         Init.TableCorrespondance[i].Nouveau_Code = TableProtocoleVaccinal[k].Code;
                                         Init.TableCorrespondance[i].Libelle_Nouveau_Code = TableProtocoleVaccinal[k].Lib;
@@ -1397,7 +1534,7 @@ namespace RecodageList
                             }
                         }
                     }
-                    progressBar1.Value = i;
+                    progressBar_rapprochement.Value = i;
                     Console.WriteLine("Avancement : " + i + "/" + Init.TableCorrespondance.Count);
                 }
             }
@@ -1409,7 +1546,8 @@ namespace RecodageList
                     {
                         for (int j = 0; j < Init.TableReferentiel.Count; j++)
                         {
-                            if (Init.TableCorrespondance[i].Canonical == fonc.CanonicalString(Init.TableReferentiel[j].Lib)
+                            if (Init.TableCorrespondance[i].Canonical!="" && Init.TableReferentiel[i].Canonical!=""
+                                && Init.TableCorrespondance[i].Canonical == Init.TableReferentiel[j].Canonical
                                 && Init.TableCorrespondance[i].Cpl == Init.TableReferentiel[j].Cpl
                                 && Init.TableCorrespondance[i].Cpl1 == Init.TableReferentiel[j].Cpl1
                                 && Init.TableCorrespondance[i].Cpl2 == Init.TableReferentiel[j].Cpl2
@@ -1438,7 +1576,7 @@ namespace RecodageList
                             }
                         }
                     }
-                    progressBar1.Value = i;
+                    progressBar_rapprochement.Value = i;
                     Console.WriteLine("Avancement : " + i + "/" + Init.TableCorrespondance.Count);
                 }
             }
@@ -1453,10 +1591,42 @@ namespace RecodageList
             InitStructSaisie();
             InitColorSaisie();
             MessageBox.Show("Rapprochement automatique terminé. \r\n" + nbItemRapprochés.ToString() + " code(s) rapproché(s) automatiquement.");
-            progressBar1.Value = 0;
+            progressBar_rapprochement.Value = 0;
             button_deleteRecodage.Enabled = true;
             button_afficherCreationCode.Enabled = true;
             button_affecter.Enabled = true;
+        }
+
+        private void button_acces_admin_Click(object sender, EventArgs e)
+        {
+            if(button_acces_admin.Text == "Accès interface Admin")
+            {
+                textBox_pass_admin.Visible = true;
+                button_okmdpadmin.Visible = true;
+                //groupBox_admin.Visible = true;
+                button_acces_admin.Text = "Fermer interface Admin";
+            }
+            else if (button_acces_admin.Text == "Fermer interface Admin")
+            {
+                textBox_pass_admin.Text = "";
+                textBox_pass_admin.Visible = false;
+                button_okmdpadmin.Visible = false;
+                groupBox_admin.Visible = false;
+                button_acces_admin.Text = "Accès interface Admin";
+            }
+        }
+
+        private void button_okmdpadmin_Click(object sender, EventArgs e)
+        {
+            string PassAdmin = "TeamReprise";
+            if(textBox_pass_admin.Text == PassAdmin)
+            {
+                groupBox_admin.Visible = true;
+            }
+            else
+            {
+                MessageBox.Show("Mot de passe incorrect.");
+            }
         }
     }
 }

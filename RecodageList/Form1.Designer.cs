@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.dataGridView_saisie = new System.Windows.Forms.DataGridView();
             this.button_affecter = new System.Windows.Forms.Button();
             this.comboBox_filtre = new System.Windows.Forms.ComboBox();
@@ -44,15 +44,20 @@
             this.button_deleteRecodage = new System.Windows.Forms.Button();
             this.button_rapprochementmodule = new System.Windows.Forms.Button();
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
-            this.progressBar1 = new System.Windows.Forms.ProgressBar();
+            this.progressBar_rapprochement = new System.Windows.Forms.ProgressBar();
             this.button_parambase = new System.Windows.Forms.Button();
             this.button_chargement = new System.Windows.Forms.Button();
-            this.progressBar_chargementlogiciel = new System.Windows.Forms.ProgressBar();
+            this.progressBar_admin = new System.Windows.Forms.ProgressBar();
             this.button_testsqlserver = new System.Windows.Forms.Button();
             this.button_exportCorresp = new System.Windows.Forms.Button();
             this.button_rapprochement_global = new System.Windows.Forms.Button();
+            this.groupBox_admin = new System.Windows.Forms.GroupBox();
+            this.button_acces_admin = new System.Windows.Forms.Button();
+            this.textBox_pass_admin = new System.Windows.Forms.TextBox();
+            this.button_okmdpadmin = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_saisie)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_ref)).BeginInit();
+            this.groupBox_admin.SuspendLayout();
             this.SuspendLayout();
             // 
             // dataGridView_saisie
@@ -60,8 +65,8 @@
             this.dataGridView_saisie.AllowUserToAddRows = false;
             this.dataGridView_saisie.AllowUserToDeleteRows = false;
             this.dataGridView_saisie.AllowUserToResizeRows = false;
-            dataGridViewCellStyle2.BackColor = System.Drawing.Color.White;
-            this.dataGridView_saisie.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.White;
+            this.dataGridView_saisie.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
             this.dataGridView_saisie.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView_saisie.Location = new System.Drawing.Point(62, 42);
             this.dataGridView_saisie.Name = "dataGridView_saisie";
@@ -76,9 +81,9 @@
             // button_affecter
             // 
             this.button_affecter.Enabled = false;
-            this.button_affecter.Location = new System.Drawing.Point(1121, 420);
+            this.button_affecter.Location = new System.Drawing.Point(1155, 390);
             this.button_affecter.Name = "button_affecter";
-            this.button_affecter.Size = new System.Drawing.Size(75, 23);
+            this.button_affecter.Size = new System.Drawing.Size(96, 23);
             this.button_affecter.TabIndex = 1;
             this.button_affecter.Text = "Affecter code";
             this.button_affecter.UseVisualStyleBackColor = true;
@@ -143,7 +148,7 @@
             // button_afficherCreationCode
             // 
             this.button_afficherCreationCode.Enabled = false;
-            this.button_afficherCreationCode.Location = new System.Drawing.Point(1174, 101);
+            this.button_afficherCreationCode.Location = new System.Drawing.Point(1155, 83);
             this.button_afficherCreationCode.Name = "button_afficherCreationCode";
             this.button_afficherCreationCode.Size = new System.Drawing.Size(96, 23);
             this.button_afficherCreationCode.TabIndex = 10;
@@ -154,7 +159,7 @@
             // textBox_codeacreer
             // 
             this.textBox_codeacreer.Enabled = false;
-            this.textBox_codeacreer.Location = new System.Drawing.Point(1174, 146);
+            this.textBox_codeacreer.Location = new System.Drawing.Point(1155, 112);
             this.textBox_codeacreer.Name = "textBox_codeacreer";
             this.textBox_codeacreer.Size = new System.Drawing.Size(134, 20);
             this.textBox_codeacreer.TabIndex = 11;
@@ -162,7 +167,7 @@
             // textBox_libellecodeacreer
             // 
             this.textBox_libellecodeacreer.Enabled = false;
-            this.textBox_libellecodeacreer.Location = new System.Drawing.Point(1174, 172);
+            this.textBox_libellecodeacreer.Location = new System.Drawing.Point(1155, 138);
             this.textBox_libellecodeacreer.Name = "textBox_libellecodeacreer";
             this.textBox_libellecodeacreer.Size = new System.Drawing.Size(134, 20);
             this.textBox_libellecodeacreer.TabIndex = 12;
@@ -171,7 +176,7 @@
             // 
             this.checkBox_codeacreer_actif_inactif.AutoSize = true;
             this.checkBox_codeacreer_actif_inactif.Enabled = false;
-            this.checkBox_codeacreer_actif_inactif.Location = new System.Drawing.Point(1174, 198);
+            this.checkBox_codeacreer_actif_inactif.Location = new System.Drawing.Point(1155, 164);
             this.checkBox_codeacreer_actif_inactif.Name = "checkBox_codeacreer_actif_inactif";
             this.checkBox_codeacreer_actif_inactif.Size = new System.Drawing.Size(55, 17);
             this.checkBox_codeacreer_actif_inactif.TabIndex = 13;
@@ -181,7 +186,7 @@
             // button_creercode
             // 
             this.button_creercode.Enabled = false;
-            this.button_creercode.Location = new System.Drawing.Point(1174, 221);
+            this.button_creercode.Location = new System.Drawing.Point(1155, 187);
             this.button_creercode.Name = "button_creercode";
             this.button_creercode.Size = new System.Drawing.Size(75, 23);
             this.button_creercode.TabIndex = 14;
@@ -192,7 +197,7 @@
             // button_deleteRecodage
             // 
             this.button_deleteRecodage.Enabled = false;
-            this.button_deleteRecodage.Location = new System.Drawing.Point(1174, 57);
+            this.button_deleteRecodage.Location = new System.Drawing.Point(1155, 42);
             this.button_deleteRecodage.Name = "button_deleteRecodage";
             this.button_deleteRecodage.Size = new System.Drawing.Size(131, 23);
             this.button_deleteRecodage.TabIndex = 15;
@@ -202,7 +207,7 @@
             // 
             // button_rapprochementmodule
             // 
-            this.button_rapprochementmodule.Location = new System.Drawing.Point(1155, 267);
+            this.button_rapprochementmodule.Location = new System.Drawing.Point(1155, 237);
             this.button_rapprochementmodule.Name = "button_rapprochementmodule";
             this.button_rapprochementmodule.Size = new System.Drawing.Size(149, 43);
             this.button_rapprochementmodule.TabIndex = 16;
@@ -210,18 +215,18 @@
             this.button_rapprochementmodule.UseVisualStyleBackColor = true;
             this.button_rapprochementmodule.Click += new System.EventHandler(this.button_rapprochementmodule_Click);
             // 
-            // progressBar1
+            // progressBar_rapprochement
             // 
-            this.progressBar1.Location = new System.Drawing.Point(1180, 326);
-            this.progressBar1.Name = "progressBar1";
-            this.progressBar1.Size = new System.Drawing.Size(100, 23);
-            this.progressBar1.TabIndex = 17;
+            this.progressBar_rapprochement.Location = new System.Drawing.Point(1155, 286);
+            this.progressBar_rapprochement.Name = "progressBar_rapprochement";
+            this.progressBar_rapprochement.Size = new System.Drawing.Size(149, 23);
+            this.progressBar_rapprochement.TabIndex = 17;
             // 
             // button_parambase
             // 
-            this.button_parambase.Location = new System.Drawing.Point(1171, 487);
+            this.button_parambase.Location = new System.Drawing.Point(20, 28);
             this.button_parambase.Name = "button_parambase";
-            this.button_parambase.Size = new System.Drawing.Size(75, 23);
+            this.button_parambase.Size = new System.Drawing.Size(133, 23);
             this.button_parambase.TabIndex = 18;
             this.button_parambase.Text = "Param base";
             this.button_parambase.UseVisualStyleBackColor = true;
@@ -229,7 +234,7 @@
             // 
             // button_chargement
             // 
-            this.button_chargement.Location = new System.Drawing.Point(1171, 530);
+            this.button_chargement.Location = new System.Drawing.Point(20, 57);
             this.button_chargement.Name = "button_chargement";
             this.button_chargement.Size = new System.Drawing.Size(133, 46);
             this.button_chargement.TabIndex = 19;
@@ -237,18 +242,18 @@
             this.button_chargement.UseVisualStyleBackColor = true;
             this.button_chargement.Click += new System.EventHandler(this.button_chargement_Click);
             // 
-            // progressBar_chargementlogiciel
+            // progressBar_admin
             // 
-            this.progressBar_chargementlogiciel.Location = new System.Drawing.Point(1180, 582);
-            this.progressBar_chargementlogiciel.Name = "progressBar_chargementlogiciel";
-            this.progressBar_chargementlogiciel.Size = new System.Drawing.Size(100, 23);
-            this.progressBar_chargementlogiciel.TabIndex = 20;
+            this.progressBar_admin.Location = new System.Drawing.Point(20, 109);
+            this.progressBar_admin.Name = "progressBar_admin";
+            this.progressBar_admin.Size = new System.Drawing.Size(133, 23);
+            this.progressBar_admin.TabIndex = 20;
             // 
             // button_testsqlserver
             // 
-            this.button_testsqlserver.Location = new System.Drawing.Point(1144, 747);
+            this.button_testsqlserver.Location = new System.Drawing.Point(21, 189);
             this.button_testsqlserver.Name = "button_testsqlserver";
-            this.button_testsqlserver.Size = new System.Drawing.Size(144, 23);
+            this.button_testsqlserver.Size = new System.Drawing.Size(132, 23);
             this.button_testsqlserver.TabIndex = 21;
             this.button_testsqlserver.Text = "Test connexion SQL Server";
             this.button_testsqlserver.UseVisualStyleBackColor = true;
@@ -256,9 +261,9 @@
             // 
             // button_exportCorresp
             // 
-            this.button_exportCorresp.Location = new System.Drawing.Point(1174, 627);
+            this.button_exportCorresp.Location = new System.Drawing.Point(20, 138);
             this.button_exportCorresp.Name = "button_exportCorresp";
-            this.button_exportCorresp.Size = new System.Drawing.Size(130, 45);
+            this.button_exportCorresp.Size = new System.Drawing.Size(133, 45);
             this.button_exportCorresp.TabIndex = 22;
             this.button_exportCorresp.Text = "Exportation vers table de travail reprise";
             this.button_exportCorresp.UseVisualStyleBackColor = true;
@@ -266,7 +271,7 @@
             // 
             // button_rapprochement_global
             // 
-            this.button_rapprochement_global.Location = new System.Drawing.Point(1155, 355);
+            this.button_rapprochement_global.Location = new System.Drawing.Point(1155, 315);
             this.button_rapprochement_global.Name = "button_rapprochement_global";
             this.button_rapprochement_global.Size = new System.Drawing.Size(149, 43);
             this.button_rapprochement_global.TabIndex = 23;
@@ -274,18 +279,62 @@
             this.button_rapprochement_global.UseVisualStyleBackColor = true;
             this.button_rapprochement_global.Click += new System.EventHandler(this.button_rapprochement_global_Click);
             // 
+            // groupBox_admin
+            // 
+            this.groupBox_admin.Controls.Add(this.button_parambase);
+            this.groupBox_admin.Controls.Add(this.button_chargement);
+            this.groupBox_admin.Controls.Add(this.button_testsqlserver);
+            this.groupBox_admin.Controls.Add(this.button_exportCorresp);
+            this.groupBox_admin.Controls.Add(this.progressBar_admin);
+            this.groupBox_admin.Location = new System.Drawing.Point(1146, 494);
+            this.groupBox_admin.Name = "groupBox_admin";
+            this.groupBox_admin.Size = new System.Drawing.Size(178, 225);
+            this.groupBox_admin.TabIndex = 24;
+            this.groupBox_admin.TabStop = false;
+            this.groupBox_admin.Text = "Interface Admin";
+            this.groupBox_admin.Visible = false;
+            // 
+            // button_acces_admin
+            // 
+            this.button_acces_admin.Location = new System.Drawing.Point(1156, 440);
+            this.button_acces_admin.Name = "button_acces_admin";
+            this.button_acces_admin.Size = new System.Drawing.Size(133, 23);
+            this.button_acces_admin.TabIndex = 25;
+            this.button_acces_admin.Text = "Accès interface Admin";
+            this.button_acces_admin.UseVisualStyleBackColor = true;
+            this.button_acces_admin.Click += new System.EventHandler(this.button_acces_admin_Click);
+            // 
+            // textBox_pass_admin
+            // 
+            this.textBox_pass_admin.Location = new System.Drawing.Point(1156, 468);
+            this.textBox_pass_admin.Name = "textBox_pass_admin";
+            this.textBox_pass_admin.PasswordChar = '*';
+            this.textBox_pass_admin.Size = new System.Drawing.Size(95, 20);
+            this.textBox_pass_admin.TabIndex = 26;
+            this.textBox_pass_admin.Visible = false;
+            // 
+            // button_okmdpadmin
+            // 
+            this.button_okmdpadmin.Location = new System.Drawing.Point(1254, 465);
+            this.button_okmdpadmin.Name = "button_okmdpadmin";
+            this.button_okmdpadmin.Size = new System.Drawing.Size(35, 23);
+            this.button_okmdpadmin.TabIndex = 27;
+            this.button_okmdpadmin.Text = "OK";
+            this.button_okmdpadmin.UseVisualStyleBackColor = true;
+            this.button_okmdpadmin.Visible = false;
+            this.button_okmdpadmin.Click += new System.EventHandler(this.button_okmdpadmin_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1355, 836);
+            this.Controls.Add(this.button_okmdpadmin);
+            this.Controls.Add(this.textBox_pass_admin);
+            this.Controls.Add(this.button_acces_admin);
+            this.Controls.Add(this.groupBox_admin);
             this.Controls.Add(this.button_rapprochement_global);
-            this.Controls.Add(this.button_exportCorresp);
-            this.Controls.Add(this.button_testsqlserver);
-            this.Controls.Add(this.progressBar_chargementlogiciel);
-            this.Controls.Add(this.button_chargement);
-            this.Controls.Add(this.button_parambase);
-            this.Controls.Add(this.progressBar1);
+            this.Controls.Add(this.progressBar_rapprochement);
             this.Controls.Add(this.button_rapprochementmodule);
             this.Controls.Add(this.button_deleteRecodage);
             this.Controls.Add(this.button_creercode);
@@ -306,6 +355,7 @@
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Form1_KeyDown);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_saisie)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_ref)).EndInit();
+            this.groupBox_admin.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -328,13 +378,17 @@
         private System.Windows.Forms.Button button_deleteRecodage;
         private System.Windows.Forms.Button button_rapprochementmodule;
         private System.ComponentModel.BackgroundWorker backgroundWorker1;
-        private System.Windows.Forms.ProgressBar progressBar1;
+        private System.Windows.Forms.ProgressBar progressBar_rapprochement;
         private System.Windows.Forms.Button button_parambase;
         private System.Windows.Forms.Button button_chargement;
-        private System.Windows.Forms.ProgressBar progressBar_chargementlogiciel;
+        private System.Windows.Forms.ProgressBar progressBar_admin;
         private System.Windows.Forms.Button button_testsqlserver;
         private System.Windows.Forms.Button button_exportCorresp;
         private System.Windows.Forms.Button button_rapprochement_global;
+        private System.Windows.Forms.GroupBox groupBox_admin;
+        private System.Windows.Forms.Button button_acces_admin;
+        private System.Windows.Forms.TextBox textBox_pass_admin;
+        private System.Windows.Forms.Button button_okmdpadmin;
     }
 }
 
