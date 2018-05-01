@@ -4,7 +4,7 @@ using System.Text;
 
 namespace RecodageList.DAL
 {
-    class Correspondance
+    public class Correspondance
     {
         public string TypeItem { get; set; }
         public string Ancien_Code { get; set; }

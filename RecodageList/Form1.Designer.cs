@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.dataGridView_saisie = new System.Windows.Forms.DataGridView();
             this.button_affecter = new System.Windows.Forms.Button();
             this.comboBox_filtre = new System.Windows.Forms.ComboBox();
@@ -45,6 +45,12 @@
             this.button_rapprochementmodule = new System.Windows.Forms.Button();
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             this.progressBar1 = new System.Windows.Forms.ProgressBar();
+            this.button_parambase = new System.Windows.Forms.Button();
+            this.button_chargement = new System.Windows.Forms.Button();
+            this.progressBar_chargementlogiciel = new System.Windows.Forms.ProgressBar();
+            this.button_testsqlserver = new System.Windows.Forms.Button();
+            this.button_exportCorresp = new System.Windows.Forms.Button();
+            this.button_rapprochement_global = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_saisie)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_ref)).BeginInit();
             this.SuspendLayout();
@@ -53,8 +59,9 @@
             // 
             this.dataGridView_saisie.AllowUserToAddRows = false;
             this.dataGridView_saisie.AllowUserToDeleteRows = false;
-            dataGridViewCellStyle3.BackColor = System.Drawing.Color.White;
-            this.dataGridView_saisie.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle3;
+            this.dataGridView_saisie.AllowUserToResizeRows = false;
+            dataGridViewCellStyle2.BackColor = System.Drawing.Color.White;
+            this.dataGridView_saisie.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle2;
             this.dataGridView_saisie.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView_saisie.Location = new System.Drawing.Point(62, 42);
             this.dataGridView_saisie.Name = "dataGridView_saisie";
@@ -69,7 +76,7 @@
             // button_affecter
             // 
             this.button_affecter.Enabled = false;
-            this.button_affecter.Location = new System.Drawing.Point(1121, 390);
+            this.button_affecter.Location = new System.Drawing.Point(1121, 420);
             this.button_affecter.Name = "button_affecter";
             this.button_affecter.Size = new System.Drawing.Size(75, 23);
             this.button_affecter.TabIndex = 1;
@@ -104,6 +111,7 @@
             // 
             this.dataGridView_ref.AllowUserToAddRows = false;
             this.dataGridView_ref.AllowUserToDeleteRows = false;
+            this.dataGridView_ref.AllowUserToResizeRows = false;
             this.dataGridView_ref.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView_ref.Location = new System.Drawing.Point(62, 390);
             this.dataGridView_ref.Name = "dataGridView_ref";
@@ -209,11 +217,74 @@
             this.progressBar1.Size = new System.Drawing.Size(100, 23);
             this.progressBar1.TabIndex = 17;
             // 
+            // button_parambase
+            // 
+            this.button_parambase.Location = new System.Drawing.Point(1171, 487);
+            this.button_parambase.Name = "button_parambase";
+            this.button_parambase.Size = new System.Drawing.Size(75, 23);
+            this.button_parambase.TabIndex = 18;
+            this.button_parambase.Text = "Param base";
+            this.button_parambase.UseVisualStyleBackColor = true;
+            this.button_parambase.Click += new System.EventHandler(this.button_parambase_Click);
+            // 
+            // button_chargement
+            // 
+            this.button_chargement.Location = new System.Drawing.Point(1171, 530);
+            this.button_chargement.Name = "button_chargement";
+            this.button_chargement.Size = new System.Drawing.Size(133, 46);
+            this.button_chargement.TabIndex = 19;
+            this.button_chargement.Text = "Chargement base dans le logiciel";
+            this.button_chargement.UseVisualStyleBackColor = true;
+            this.button_chargement.Click += new System.EventHandler(this.button_chargement_Click);
+            // 
+            // progressBar_chargementlogiciel
+            // 
+            this.progressBar_chargementlogiciel.Location = new System.Drawing.Point(1180, 582);
+            this.progressBar_chargementlogiciel.Name = "progressBar_chargementlogiciel";
+            this.progressBar_chargementlogiciel.Size = new System.Drawing.Size(100, 23);
+            this.progressBar_chargementlogiciel.TabIndex = 20;
+            // 
+            // button_testsqlserver
+            // 
+            this.button_testsqlserver.Location = new System.Drawing.Point(1144, 747);
+            this.button_testsqlserver.Name = "button_testsqlserver";
+            this.button_testsqlserver.Size = new System.Drawing.Size(144, 23);
+            this.button_testsqlserver.TabIndex = 21;
+            this.button_testsqlserver.Text = "Test connexion SQL Server";
+            this.button_testsqlserver.UseVisualStyleBackColor = true;
+            this.button_testsqlserver.Click += new System.EventHandler(this.button_testsqlserver_Click);
+            // 
+            // button_exportCorresp
+            // 
+            this.button_exportCorresp.Location = new System.Drawing.Point(1174, 627);
+            this.button_exportCorresp.Name = "button_exportCorresp";
+            this.button_exportCorresp.Size = new System.Drawing.Size(130, 45);
+            this.button_exportCorresp.TabIndex = 22;
+            this.button_exportCorresp.Text = "Exportation vers table de travail reprise";
+            this.button_exportCorresp.UseVisualStyleBackColor = true;
+            this.button_exportCorresp.Click += new System.EventHandler(this.button_exportCorresp_Click);
+            // 
+            // button_rapprochement_global
+            // 
+            this.button_rapprochement_global.Location = new System.Drawing.Point(1155, 355);
+            this.button_rapprochement_global.Name = "button_rapprochement_global";
+            this.button_rapprochement_global.Size = new System.Drawing.Size(149, 43);
+            this.button_rapprochement_global.TabIndex = 23;
+            this.button_rapprochement_global.Text = "Rapprochement automatique global";
+            this.button_rapprochement_global.UseVisualStyleBackColor = true;
+            this.button_rapprochement_global.Click += new System.EventHandler(this.button_rapprochement_global_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1355, 836);
+            this.Controls.Add(this.button_rapprochement_global);
+            this.Controls.Add(this.button_exportCorresp);
+            this.Controls.Add(this.button_testsqlserver);
+            this.Controls.Add(this.progressBar_chargementlogiciel);
+            this.Controls.Add(this.button_chargement);
+            this.Controls.Add(this.button_parambase);
             this.Controls.Add(this.progressBar1);
             this.Controls.Add(this.button_rapprochementmodule);
             this.Controls.Add(this.button_deleteRecodage);
@@ -258,6 +329,12 @@
         private System.Windows.Forms.Button button_rapprochementmodule;
         private System.ComponentModel.BackgroundWorker backgroundWorker1;
         private System.Windows.Forms.ProgressBar progressBar1;
+        private System.Windows.Forms.Button button_parambase;
+        private System.Windows.Forms.Button button_chargement;
+        private System.Windows.Forms.ProgressBar progressBar_chargementlogiciel;
+        private System.Windows.Forms.Button button_testsqlserver;
+        private System.Windows.Forms.Button button_exportCorresp;
+        private System.Windows.Forms.Button button_rapprochement_global;
     }
 }
 

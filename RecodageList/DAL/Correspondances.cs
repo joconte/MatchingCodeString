@@ -157,6 +157,7 @@ namespace RecodageList.DAL
                 }
                 
             }
+            Init.TableCorrespondanceSansModification = ListCorresp;
             return (ListCorresp);
         }
 
@@ -405,6 +406,73 @@ namespace RecodageList.DAL
                 catch (System.Data.SQLite.SQLiteException e)
                 {
                     Console.WriteLine(string.Format("Failed to create column [{0}]. Most likely it already exists, which is fine.", columnName));
+                }
+            }
+        }
+
+        public void ExporteCorrespondance()
+        {
+            ConnexionSQLServer con = new ConnexionSQLServer();
+
+            string updateCPL1 = "Update TB$S_CorrespondanceItem set Cpl1 = 0 where isnull(Cpl1,'')='' ";
+            con.ExecuteQuery(updateCPL1);
+
+            string updateCPL2 = "Update TB$S_CorrespondanceItem set Cpl2 = 0 where isnull(Cpl2,'')='' ";
+            con.ExecuteQuery(updateCPL2);
+
+
+            for (int i=0;i<Init.TableCorrespondance.Count;i++)
+            {
+                if (Init.TableCorrespondance[i].Nouveau_Code != null && Init.TableCorrespondance[i].NomRef == "AMT")
+                    Console.WriteLine(".");
+
+                    if (Init.TableCorrespondance[i].Nouveau_Code != null)
+                {
+                    if (Init.TableCorrespondance[i].Cpl != "50" && Init.TableCorrespondance[i].Cpl != "60")
+                    {
+                        string sqlupdate = "Update TB$S_CorrespondanceItem " +
+                        "set nouveau_code = '" + Init.TableCorrespondance[i].Nouveau_Code.Replace("'", "''") + "', " +
+                        "libelle_nouveau_code = '" + Init.TableCorrespondance[i].Libelle_Nouveau_Code.Replace("'","''") + "', " +
+                        "NouveauCodeInactif = '" + Init.TableCorrespondance[i].NouveauCodeInactif.ToString() + "' "+
+                        "where ancien_code ='" + Init.TableCorrespondance[i].Ancien_Code.Replace("'", "''") + "' and " +
+                        "ISNULL(Cpl,'') = '" + Init.TableCorrespondance[i].Cpl + "' and " +
+                        "ISNULL(Cpl1,'') = '" + Init.TableCorrespondance[i].Cpl1 + "' and " +
+                        "ISNULL(Cpl2,'') = '" + Init.TableCorrespondance[i].Cpl2 + "' and " +
+                        "TypeRef = '" + Init.TableCorrespondance[i].TypeRef + "' and " +
+                        "rtrim(ltrim(isnull(nouveau_code,'')))!= '" + Init.TableCorrespondance[i].Nouveau_Code.Trim().Replace("'", "''") + "' and " +
+                        "rtrim(ltrim(isnull(Libelle_nouveau_code,'')))!= '" + Init.TableCorrespondance[i].Libelle_Nouveau_Code.Trim().Replace("'", "''") + "'";
+                        con.ExecuteQuery(sqlupdate);
+                    }
+                    else if (Init.TableCorrespondance[i].Cpl == "50")
+                    {
+                        string sqlupdate = "Update TB$S_CorrespondanceItem " +
+                        "set nouveau_code = '" + Init.TableCorrespondance[i].Nouveau_Code.Replace("'", "''") + "', " +
+                        "libelle_nouveau_code = '" + Init.TableCorrespondance[i].Libelle_Nouveau_Code.Replace("'", "''") + "', " +
+                        "NouveauCodeInactif = '" + Init.TableCorrespondance[i].NouveauCodeInactif.ToString() + "' " +
+                        "where ancien_code ='" + Init.TableCorrespondance[i].Ancien_Code.Replace("'", "''") + "' and " +
+                        "ISNULL(Cpl,'') = '" + Init.TableCorrespondance[i].Cpl + "' and " +
+                        //"ISNULL(Cpl1,0) = '" + Init.TableCorrespondance[i].Cpl1 + "' and " +
+                        //"ISNULL(Cpl2,0) = '" + Init.TableCorrespondance[i].Cpl2 + "' and " +
+                        "TypeRef = '" + Init.TableCorrespondance[i].TypeRef + "' and " +
+                        "rtrim(ltrim(isnull(nouveau_code,'')))!= '" + Init.TableCorrespondance[i].Nouveau_Code.Trim().Replace("'", "''") + "' and " +
+                        "rtrim(ltrim(isnull(Libelle_nouveau_code,'')))!= '" + Init.TableCorrespondance[i].Libelle_Nouveau_Code.Trim().Replace("'", "''") + "'";
+                        con.ExecuteQuery(sqlupdate);
+                    }
+                    else if (Init.TableCorrespondance[i].Cpl == "60")
+                    {
+                        string sqlupdate = "Update TB$S_CorrespondanceItem " +
+                        "set nouveau_code = '" + Init.TableCorrespondance[i].Nouveau_Code.Replace("'", "''") + "', " +
+                        "libelle_nouveau_code = '" + Init.TableCorrespondance[i].Libelle_Nouveau_Code.Replace("'", "''") + "', " +
+                        "NouveauCodeInactif = '" + Init.TableCorrespondance[i].NouveauCodeInactif.ToString() + "' " +
+                        "where ancien_code ='" + Init.TableCorrespondance[i].Ancien_Code.Replace("'", "''") + "' and " +
+                        "ISNULL(Cpl,'') = '" + Init.TableCorrespondance[i].Cpl + "' and " +
+                        //"ISNULL(Cpl1,0) = '" + Init.TableCorrespondance[i].Cpl1 + "' and " +
+                        //"ISNULL(Cpl2,0) = '" + Init.TableCorrespondance[i].Cpl2 + "' and " +
+                        "TypeRef = '" + Init.TableCorrespondance[i].TypeRef + "'and " +
+                        "rtrim(ltrim(isnull(nouveau_code,'')))!= '" + Init.TableCorrespondance[i].Nouveau_Code.Trim().Replace("'", "''") + "' and " +
+                        "rtrim(ltrim(isnull(Libelle_nouveau_code,'')))!= '" + Init.TableCorrespondance[i].Libelle_Nouveau_Code.Trim().Replace("'", "''") + "'";
+                        con.ExecuteQuery(sqlupdate);
+                    }
                 }
             }
         }

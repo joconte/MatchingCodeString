@@ -4,7 +4,7 @@ using System.Text;
 
 namespace RecodageList.DAL
 {
-    class Referentiel
+    public class Referentiel
     {
         public string Type { get; set; }
         public string TypeItem { get; set; }
