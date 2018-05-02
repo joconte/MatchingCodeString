@@ -68,7 +68,7 @@
             dataGridViewCellStyle1.BackColor = System.Drawing.Color.White;
             this.dataGridView_saisie.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
             this.dataGridView_saisie.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView_saisie.Location = new System.Drawing.Point(62, 42);
+            this.dataGridView_saisie.Location = new System.Drawing.Point(12, 53);
             this.dataGridView_saisie.Name = "dataGridView_saisie";
             this.dataGridView_saisie.ReadOnly = true;
             this.dataGridView_saisie.RowHeadersVisible = false;
@@ -81,7 +81,7 @@
             // button_affecter
             // 
             this.button_affecter.Enabled = false;
-            this.button_affecter.Location = new System.Drawing.Point(1155, 390);
+            this.button_affecter.Location = new System.Drawing.Point(1080, 401);
             this.button_affecter.Name = "button_affecter";
             this.button_affecter.Size = new System.Drawing.Size(96, 23);
             this.button_affecter.TabIndex = 1;
@@ -96,7 +96,7 @@
             "123",
             "124",
             "142"});
-            this.comboBox_filtre.Location = new System.Drawing.Point(60, 13);
+            this.comboBox_filtre.Location = new System.Drawing.Point(12, 12);
             this.comboBox_filtre.Name = "comboBox_filtre";
             this.comboBox_filtre.Size = new System.Drawing.Size(121, 21);
             this.comboBox_filtre.TabIndex = 4;
@@ -104,7 +104,7 @@
             // 
             // button_filter
             // 
-            this.button_filter.Location = new System.Drawing.Point(187, 13);
+            this.button_filter.Location = new System.Drawing.Point(139, 12);
             this.button_filter.Name = "button_filter";
             this.button_filter.Size = new System.Drawing.Size(75, 23);
             this.button_filter.TabIndex = 5;
@@ -118,7 +118,7 @@
             this.dataGridView_ref.AllowUserToDeleteRows = false;
             this.dataGridView_ref.AllowUserToResizeRows = false;
             this.dataGridView_ref.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView_ref.Location = new System.Drawing.Point(62, 390);
+            this.dataGridView_ref.Location = new System.Drawing.Point(12, 401);
             this.dataGridView_ref.Name = "dataGridView_ref";
             this.dataGridView_ref.ReadOnly = true;
             this.dataGridView_ref.RowHeadersVisible = false;
@@ -130,7 +130,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(21, 189);
+            this.label1.Location = new System.Drawing.Point(9, 37);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(35, 13);
             this.label1.TabIndex = 8;
@@ -139,7 +139,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(-2, 549);
+            this.label2.Location = new System.Drawing.Point(9, 385);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(58, 13);
             this.label2.TabIndex = 9;
@@ -148,7 +148,7 @@
             // button_afficherCreationCode
             // 
             this.button_afficherCreationCode.Enabled = false;
-            this.button_afficherCreationCode.Location = new System.Drawing.Point(1155, 83);
+            this.button_afficherCreationCode.Location = new System.Drawing.Point(1080, 94);
             this.button_afficherCreationCode.Name = "button_afficherCreationCode";
             this.button_afficherCreationCode.Size = new System.Drawing.Size(96, 23);
             this.button_afficherCreationCode.TabIndex = 10;
@@ -159,7 +159,7 @@
             // textBox_codeacreer
             // 
             this.textBox_codeacreer.Enabled = false;
-            this.textBox_codeacreer.Location = new System.Drawing.Point(1155, 112);
+            this.textBox_codeacreer.Location = new System.Drawing.Point(1080, 123);
             this.textBox_codeacreer.Name = "textBox_codeacreer";
             this.textBox_codeacreer.Size = new System.Drawing.Size(134, 20);
             this.textBox_codeacreer.TabIndex = 11;
@@ -167,7 +167,7 @@
             // textBox_libellecodeacreer
             // 
             this.textBox_libellecodeacreer.Enabled = false;
-            this.textBox_libellecodeacreer.Location = new System.Drawing.Point(1155, 138);
+            this.textBox_libellecodeacreer.Location = new System.Drawing.Point(1080, 149);
             this.textBox_libellecodeacreer.Name = "textBox_libellecodeacreer";
             this.textBox_libellecodeacreer.Size = new System.Drawing.Size(134, 20);
             this.textBox_libellecodeacreer.TabIndex = 12;
@@ -176,7 +176,7 @@
             // 
             this.checkBox_codeacreer_actif_inactif.AutoSize = true;
             this.checkBox_codeacreer_actif_inactif.Enabled = false;
-            this.checkBox_codeacreer_actif_inactif.Location = new System.Drawing.Point(1155, 164);
+            this.checkBox_codeacreer_actif_inactif.Location = new System.Drawing.Point(1080, 175);
             this.checkBox_codeacreer_actif_inactif.Name = "checkBox_codeacreer_actif_inactif";
             this.checkBox_codeacreer_actif_inactif.Size = new System.Drawing.Size(55, 17);
             this.checkBox_codeacreer_actif_inactif.TabIndex = 13;
@@ -186,7 +186,7 @@
             // button_creercode
             // 
             this.button_creercode.Enabled = false;
-            this.button_creercode.Location = new System.Drawing.Point(1155, 187);
+            this.button_creercode.Location = new System.Drawing.Point(1080, 198);
             this.button_creercode.Name = "button_creercode";
             this.button_creercode.Size = new System.Drawing.Size(75, 23);
             this.button_creercode.TabIndex = 14;
@@ -197,7 +197,7 @@
             // button_deleteRecodage
             // 
             this.button_deleteRecodage.Enabled = false;
-            this.button_deleteRecodage.Location = new System.Drawing.Point(1155, 42);
+            this.button_deleteRecodage.Location = new System.Drawing.Point(1080, 53);
             this.button_deleteRecodage.Name = "button_deleteRecodage";
             this.button_deleteRecodage.Size = new System.Drawing.Size(131, 23);
             this.button_deleteRecodage.TabIndex = 15;
@@ -207,7 +207,7 @@
             // 
             // button_rapprochementmodule
             // 
-            this.button_rapprochementmodule.Location = new System.Drawing.Point(1155, 237);
+            this.button_rapprochementmodule.Location = new System.Drawing.Point(1080, 248);
             this.button_rapprochementmodule.Name = "button_rapprochementmodule";
             this.button_rapprochementmodule.Size = new System.Drawing.Size(149, 43);
             this.button_rapprochementmodule.TabIndex = 16;
@@ -217,7 +217,7 @@
             // 
             // progressBar_rapprochement
             // 
-            this.progressBar_rapprochement.Location = new System.Drawing.Point(1155, 286);
+            this.progressBar_rapprochement.Location = new System.Drawing.Point(1080, 297);
             this.progressBar_rapprochement.Name = "progressBar_rapprochement";
             this.progressBar_rapprochement.Size = new System.Drawing.Size(149, 23);
             this.progressBar_rapprochement.TabIndex = 17;
@@ -271,7 +271,7 @@
             // 
             // button_rapprochement_global
             // 
-            this.button_rapprochement_global.Location = new System.Drawing.Point(1155, 315);
+            this.button_rapprochement_global.Location = new System.Drawing.Point(1080, 326);
             this.button_rapprochement_global.Name = "button_rapprochement_global";
             this.button_rapprochement_global.Size = new System.Drawing.Size(149, 43);
             this.button_rapprochement_global.TabIndex = 23;
@@ -286,7 +286,7 @@
             this.groupBox_admin.Controls.Add(this.button_testsqlserver);
             this.groupBox_admin.Controls.Add(this.button_exportCorresp);
             this.groupBox_admin.Controls.Add(this.progressBar_admin);
-            this.groupBox_admin.Location = new System.Drawing.Point(1146, 494);
+            this.groupBox_admin.Location = new System.Drawing.Point(1071, 505);
             this.groupBox_admin.Name = "groupBox_admin";
             this.groupBox_admin.Size = new System.Drawing.Size(178, 225);
             this.groupBox_admin.TabIndex = 24;
@@ -296,7 +296,7 @@
             // 
             // button_acces_admin
             // 
-            this.button_acces_admin.Location = new System.Drawing.Point(1156, 440);
+            this.button_acces_admin.Location = new System.Drawing.Point(1081, 451);
             this.button_acces_admin.Name = "button_acces_admin";
             this.button_acces_admin.Size = new System.Drawing.Size(133, 23);
             this.button_acces_admin.TabIndex = 25;
@@ -306,16 +306,17 @@
             // 
             // textBox_pass_admin
             // 
-            this.textBox_pass_admin.Location = new System.Drawing.Point(1156, 468);
+            this.textBox_pass_admin.Location = new System.Drawing.Point(1081, 479);
             this.textBox_pass_admin.Name = "textBox_pass_admin";
             this.textBox_pass_admin.PasswordChar = '*';
             this.textBox_pass_admin.Size = new System.Drawing.Size(95, 20);
             this.textBox_pass_admin.TabIndex = 26;
             this.textBox_pass_admin.Visible = false;
+            this.textBox_pass_admin.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox_pass_admin_KeyPress);
             // 
             // button_okmdpadmin
             // 
-            this.button_okmdpadmin.Location = new System.Drawing.Point(1254, 465);
+            this.button_okmdpadmin.Location = new System.Drawing.Point(1179, 476);
             this.button_okmdpadmin.Name = "button_okmdpadmin";
             this.button_okmdpadmin.Size = new System.Drawing.Size(35, 23);
             this.button_okmdpadmin.TabIndex = 27;
@@ -328,7 +329,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1355, 836);
+            this.ClientSize = new System.Drawing.Size(1355, 748);
             this.Controls.Add(this.button_okmdpadmin);
             this.Controls.Add(this.textBox_pass_admin);
             this.Controls.Add(this.button_acces_admin);

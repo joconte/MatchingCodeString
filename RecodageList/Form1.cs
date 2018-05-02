@@ -1039,10 +1039,12 @@ namespace RecodageList
                                 Init.TableCorrespondanceFiltre[i].FlagReferentiel = 1;
                                 ObjCorr.UpdateSQLITE_TBCorrespondance(Init.TableCorrespondanceFiltre[i]);
                                 ObjCorr.UpdateSQLITE_TBCorrespondance_FlagPreventiel(Init.TableCorrespondanceFiltre[i]);
+                                /*
                                 dataGridView_saisie.Rows[i].Cells[4].Value = Init.TableCorrespondanceFiltre[i].Nouveau_Code;
                                 dataGridView_saisie.Rows[i].Cells[5].Value = Init.TableCorrespondanceFiltre[i].Libelle_Nouveau_Code;
                                 dataGridView_saisie.Rows[i].Cells[12].Value = Init.TableCorrespondanceFiltre[i].NouveauCodeInactif;
                                 dataGridView_saisie.Rows[i].Cells[20].Value = Init.TableCorrespondanceFiltre[i].FlagReferentiel;
+                                */
                                 nbItemRapprochés++;
                             }
                             else if (Init.TableCorrespondanceFiltre[i].Canonical == Init.TableReferentielFiltre[j].Canonical
@@ -1079,10 +1081,12 @@ namespace RecodageList
                                         Init.TableCorrespondanceFiltre[i].FlagReferentiel = 1;
                                         ObjCorr.UpdateSQLITE_TBCorrespondance(Init.TableCorrespondanceFiltre[i]);
                                         ObjCorr.UpdateSQLITE_TBCorrespondance_FlagPreventiel(Init.TableCorrespondanceFiltre[i]);
+                                        /*
                                         dataGridView_saisie.Rows[i].Cells[4].Value = Init.TableCorrespondanceFiltre[i].Nouveau_Code;
                                         dataGridView_saisie.Rows[i].Cells[5].Value = Init.TableCorrespondanceFiltre[i].Libelle_Nouveau_Code;
                                         dataGridView_saisie.Rows[i].Cells[12].Value = Init.TableCorrespondanceFiltre[i].NouveauCodeInactif;
                                         dataGridView_saisie.Rows[i].Cells[20].Value = Init.TableCorrespondanceFiltre[i].FlagReferentiel;
+                                        */
                                         nbItemRapprochés++;
                                     }
                                 }
@@ -1143,10 +1147,12 @@ namespace RecodageList
                                 Init.TableCorrespondanceFiltre[i].FlagReferentiel = 1;
                                 ObjCorr.UpdateSQLITE_TBCorrespondance(Init.TableCorrespondanceFiltre[i]);
                                 ObjCorr.UpdateSQLITE_TBCorrespondance_FlagPreventiel(Init.TableCorrespondanceFiltre[i]);
+                                /*
                                 dataGridView_saisie.Rows[i].Cells[4].Value = Init.TableCorrespondanceFiltre[i].Nouveau_Code;
                                 dataGridView_saisie.Rows[i].Cells[5].Value = Init.TableCorrespondanceFiltre[i].Libelle_Nouveau_Code;
                                 dataGridView_saisie.Rows[i].Cells[12].Value = Init.TableCorrespondanceFiltre[i].NouveauCodeInactif;
                                 dataGridView_saisie.Rows[i].Cells[20].Value = Init.TableCorrespondanceFiltre[i].FlagReferentiel;
+                                */
                                 nbItemRapprochés++;
                             }
                             else if (Init.TableCorrespondanceFiltre[i].Canonical == Init.TableReferentielFiltre[j].Canonical
@@ -1183,10 +1189,12 @@ namespace RecodageList
                                         Init.TableCorrespondanceFiltre[i].FlagReferentiel = 1;
                                         ObjCorr.UpdateSQLITE_TBCorrespondance(Init.TableCorrespondanceFiltre[i]);
                                         ObjCorr.UpdateSQLITE_TBCorrespondance_FlagPreventiel(Init.TableCorrespondanceFiltre[i]);
+                                        /*
                                         dataGridView_saisie.Rows[i].Cells[4].Value = Init.TableCorrespondanceFiltre[i].Nouveau_Code;
                                         dataGridView_saisie.Rows[i].Cells[5].Value = Init.TableCorrespondanceFiltre[i].Libelle_Nouveau_Code;
                                         dataGridView_saisie.Rows[i].Cells[12].Value = Init.TableCorrespondanceFiltre[i].NouveauCodeInactif;
                                         dataGridView_saisie.Rows[i].Cells[20].Value = Init.TableCorrespondanceFiltre[i].FlagReferentiel;
+                                        */
                                         nbItemRapprochés++;
                                     }
                                 }
@@ -1225,10 +1233,12 @@ namespace RecodageList
                                 Init.TableCorrespondanceFiltre[i].FlagReferentiel = 1;
                                 ObjCorr.UpdateSQLITE_TBCorrespondance(Init.TableCorrespondanceFiltre[i]);
                                 ObjCorr.UpdateSQLITE_TBCorrespondance_FlagPreventiel(Init.TableCorrespondanceFiltre[i]);
+                                /*
                                 dataGridView_saisie.Rows[i].Cells[4].Value = Init.TableCorrespondanceFiltre[i].Nouveau_Code;
                                 dataGridView_saisie.Rows[i].Cells[5].Value = Init.TableCorrespondanceFiltre[i].Libelle_Nouveau_Code;
                                 dataGridView_saisie.Rows[i].Cells[12].Value = Init.TableCorrespondanceFiltre[i].NouveauCodeInactif;
                                 dataGridView_saisie.Rows[i].Cells[20].Value = Init.TableCorrespondanceFiltre[i].FlagReferentiel;
+                                */
                                 nbItemRapprochés++;
                             }
                         }
@@ -1694,14 +1704,37 @@ namespace RecodageList
 
         private void button_okmdpadmin_Click(object sender, EventArgs e)
         {
+            Enter_OK_Admin();
+        }
+
+        public void Enter_OK_Admin()
+        {
             string PassAdmin = "TeamReprise";
-            if(textBox_pass_admin.Text == PassAdmin)
+            if (textBox_pass_admin.Text == PassAdmin)
             {
                 groupBox_admin.Visible = true;
             }
             else
             {
                 MessageBox.Show("Mot de passe incorrect.");
+            }
+        }
+
+        private void textBox_pass_admin_Enter(object sender, EventArgs e)
+        {
+            //Enter_OK_Admin();
+        }
+
+        private void textBox_pass_admin_KeyDown(object sender, KeyEventArgs e)
+        {
+
+        }
+
+        private void textBox_pass_admin_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if(e.KeyChar == (char)13)
+            {
+                Enter_OK_Admin();
             }
         }
     }
