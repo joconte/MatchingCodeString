@@ -138,6 +138,20 @@ namespace RecodageList
 
         }
 
+        private void UpdateProgress_rapprochement_global_terminate(int nbItemRapprochés)
+        {
+            try
+            {
+                //On invoque le delegate pour qu'il effectue la tâche sur le temps
+                //de l'autre thread.
+                Invoke((MontrerProgresTerminate_rapprochement)Progres_rapprochement_global_terminate, nbItemRapprochés);
+            }
+            catch (Exception ex) { return; }
+
+            //progressBar_admin.Value = value;
+
+        }
+
         private void UpdateProgress_admin(int value)
         {
             try
@@ -223,6 +237,30 @@ namespace RecodageList
             button_deleteRecodage.Enabled = true;
             button_afficherCreationCode.Enabled = true;
             button_affecter.Enabled = true;
+        }
+
+        public void Progres_rapprochement_global_terminate(int nbItemRapprochés)
+        {
+            //On met la valeur dans le contrôle Windows Forms.
+
+
+            var source = new BindingSource();
+            source.DataSource = Init.TableCorrespondance;
+
+            //dataGridView_saisie.BeginInvoke(new Action(() => dataGridView_saisie.DataSource = source));
+
+            dataGridView_saisie.DataSource = source;
+
+            InitStructSaisie();
+            InitColorSaisie();
+            MessageBox.Show("Rapprochement automatique terminé. \r\n" + nbItemRapprochés.ToString() + " code(s) rapproché(s) automatiquement.");
+            progressBar_rapprochement.Value = 0;
+            /*
+            button_deleteRecodage.Enabled = true;
+            button_afficherCreationCode.Enabled = true;
+            button_affecter.Enabled = true;
+            */
+            ReactiveAllButton();
         }
 
         /*
@@ -1675,10 +1713,96 @@ namespace RecodageList
 
         }
 
+        public void InactiveControlExceptParamButton(Button button)
+        {
+            if(button.Name != button_rapprochementmodule.Name)
+            {
+                button_rapprochementmodule.Enabled = false;
+            }
+            if (button.Name != button_creer_inactif_global.Name)
+            {
+                button_creer_inactif_global.Enabled = false;
+            }
+            if (button.Name != button_creer_inactif_module.Name)
+            {
+                button_creer_inactif_module.Enabled = false;
+            }
+            if (button.Name != button_deleteRecodage.Name)
+            {
+                button_deleteRecodage.Enabled = false;
+            }
+            if (button.Name != button_chargement.Name)
+            {
+                button_chargement.Enabled = false;
+            }
+            if (button.Name != button_exportCorresp.Name)
+            {
+                button_exportCorresp.Enabled = false;
+            }
+            if (button.Name != button_afficherCreationCode.Name)
+            {
+                button_afficherCreationCode.Enabled = false;
+            }
+            if (button.Name != textBox_codeacreer.Name)
+            {
+                textBox_codeacreer.Enabled = false;
+            }
+            if (button.Name != textBox_libellecodeacreer.Name)
+            {
+                textBox_libellecodeacreer.Enabled = false;
+            }
+            if (button.Name != checkBox_codeacreer_actif_inactif.Name)
+            {
+                checkBox_codeacreer_actif_inactif.Enabled = false;
+            }
+            if (button.Name != button_affecter.Name)
+            {
+                button_affecter.Enabled = false;
+            }
+            if (button.Name != button_acces_admin.Name)
+            {
+                button_acces_admin.Enabled = false;
+            }
+            if (button.Name != button_parambase.Name)
+            {
+                button_parambase.Enabled = false;
+            }
+            if (button.Name != button_testsqlserver.Name)
+            {
+                button_testsqlserver.Enabled = false;
+            }
+        }
+
+        public void InactiveAllTextbox()
+        {
+            textBox_codeacreer.Enabled = false;
+            textBox_libellecodeacreer.Enabled = false;
+            textBox_pass_admin.Enabled = false;
+        }
+
+        public void ReactiveAllButton()
+        {
+            button_rapprochementmodule.Enabled = true;
+            button_creer_inactif_global.Enabled = true;
+            button_creer_inactif_module.Enabled = true;
+            button_deleteRecodage.Enabled = true;
+            button_chargement.Enabled = true;
+            button_exportCorresp.Enabled = true;
+            button_afficherCreationCode.Enabled = true;
+            textBox_codeacreer.Enabled = true;
+            textBox_libellecodeacreer.Enabled = true;
+            checkBox_codeacreer_actif_inactif.Enabled = true;
+            button_affecter.Enabled = true;
+            button_acces_admin.Enabled = true;
+            button_parambase.Enabled = true;
+            button_testsqlserver.Enabled = true;
+        }
 
         private void button_rapprochement_global_Click(object sender, EventArgs e)
         {
             progressBar_rapprochement.Maximum = Init.TableCorrespondance.Count - 1;
+            InactiveControlExceptParamButton(button_rapprochement_global);
+            InactiveAllTextbox();
             Thread rapprochement = new Thread(new ParameterizedThreadStart(RapprochementGlobal));
             rapprochement.Start((string)comboBox_filtre.SelectedValue);
         }
@@ -1736,6 +1860,74 @@ namespace RecodageList
             {
                 Enter_OK_Admin();
             }
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            progressBar_rapprochement.Maximum = Init.TableCorrespondanceFiltre.Count;
+            Thread creercodeinactif_module = new Thread(new ParameterizedThreadStart(CreerCodeInactifModule));
+            creercodeinactif_module.Start((string)comboBox_filtre.SelectedValue);
+
+        }
+
+        public void CreerCodeInactifModule(object ClefRef)
+        {
+            Correspondances ObjCorr = new Correspondances();
+            int nbItemRapprochés = 0;
+            for (int i = 0; i < Init.TableCorrespondanceFiltre.Count; i++)
+            {
+                if (Init.TableCorrespondanceFiltre[i].Nouveau_Code == null || Init.TableCorrespondanceFiltre[i].Nouveau_Code == ""
+                    && Init.TableCorrespondanceFiltre[i].Libelle_Ancien_Code != null && Init.TableCorrespondanceFiltre[i].Libelle_Ancien_Code != ""
+                    && Init.TableCorrespondanceFiltre[i].Cpl != "50" && Init.TableCorrespondanceFiltre[i].Cpl != "60")
+                {
+                    Init.TableCorrespondanceFiltre[i].Nouveau_Code = Init.TableCorrespondanceFiltre[i].Ancien_Code;
+                    Init.TableCorrespondanceFiltre[i].Libelle_Nouveau_Code = Init.TableCorrespondanceFiltre[i].Libelle_Ancien_Code;
+                    Init.TableCorrespondanceFiltre[i].NouveauCodeInactif = true;
+                    Init.TableCorrespondanceFiltre[i].FlagReferentiel = 2 ;
+                    ObjCorr.UpdateSQLITE_TBCorrespondance(Init.TableCorrespondanceFiltre[i]);
+                    ObjCorr.UpdateSQLITE_TBCorrespondance_FlagPreventiel(Init.TableCorrespondanceFiltre[i]);
+                    nbItemRapprochés++;
+                }
+                UpdateProgress_rapprochement(i);
+            }
+            UpdateProgress_rapprochement_module_terminate(nbItemRapprochés);
+        }
+
+        public void CreerCodeInactifGlobal()
+        {
+            Correspondances ObjCorr = new Correspondances();
+            int nbItemRapprochés = 0;
+            
+            for (int i = 0; i < Init.TableCorrespondance.Count; i++)
+            {
+                if ((Init.TableCorrespondance[i].Nouveau_Code == null || Init.TableCorrespondance[i].Nouveau_Code == "")
+                    && Init.TableCorrespondance[i].Libelle_Ancien_Code!=null && Init.TableCorrespondance[i].Libelle_Ancien_Code!=""
+                    && Init.TableCorrespondance[i].Cpl != "50" && Init.TableCorrespondance[i].Cpl != "60")
+                {
+                    Init.TableCorrespondance[i].Nouveau_Code = Init.TableCorrespondance[i].Ancien_Code;
+                    Init.TableCorrespondance[i].Libelle_Nouveau_Code = Init.TableCorrespondance[i].Libelle_Ancien_Code;
+                    Init.TableCorrespondance[i].NouveauCodeInactif = true;
+                    Init.TableCorrespondance[i].FlagReferentiel = 2;
+                    ObjCorr.UpdateSQLITE_TBCorrespondance(Init.TableCorrespondance[i]);
+                    ObjCorr.UpdateSQLITE_TBCorrespondance_FlagPreventiel(Init.TableCorrespondance[i]);
+                    nbItemRapprochés++;
+                }
+                UpdateProgress_rapprochement(i);
+            }
+            UpdateProgress_rapprochement_module_terminate(nbItemRapprochés);
+
+        }
+
+        public void CreerCodeInactifModule_terminate(object nbItemRapprochés)
+        {
+
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            progressBar_rapprochement.Maximum = Init.TableCorrespondance.Count;
+            Thread creer_inactif_global = new Thread(CreerCodeInactifGlobal);
+            creer_inactif_global.Start();
         }
     }
 }

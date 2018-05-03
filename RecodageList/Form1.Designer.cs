@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.dataGridView_saisie = new System.Windows.Forms.DataGridView();
             this.button_affecter = new System.Windows.Forms.Button();
             this.comboBox_filtre = new System.Windows.Forms.ComboBox();
@@ -55,9 +56,13 @@
             this.button_acces_admin = new System.Windows.Forms.Button();
             this.textBox_pass_admin = new System.Windows.Forms.TextBox();
             this.button_okmdpadmin = new System.Windows.Forms.Button();
+            this.button_creer_inactif_module = new System.Windows.Forms.Button();
+            this.button_creer_inactif_global = new System.Windows.Forms.Button();
+            this.pictureBox_bottom = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_saisie)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_ref)).BeginInit();
             this.groupBox_admin.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox_bottom)).BeginInit();
             this.SuspendLayout();
             // 
             // dataGridView_saisie
@@ -148,7 +153,7 @@
             // button_afficherCreationCode
             // 
             this.button_afficherCreationCode.Enabled = false;
-            this.button_afficherCreationCode.Location = new System.Drawing.Point(1080, 94);
+            this.button_afficherCreationCode.Location = new System.Drawing.Point(1080, 124);
             this.button_afficherCreationCode.Name = "button_afficherCreationCode";
             this.button_afficherCreationCode.Size = new System.Drawing.Size(96, 23);
             this.button_afficherCreationCode.TabIndex = 10;
@@ -159,7 +164,7 @@
             // textBox_codeacreer
             // 
             this.textBox_codeacreer.Enabled = false;
-            this.textBox_codeacreer.Location = new System.Drawing.Point(1080, 123);
+            this.textBox_codeacreer.Location = new System.Drawing.Point(1081, 153);
             this.textBox_codeacreer.Name = "textBox_codeacreer";
             this.textBox_codeacreer.Size = new System.Drawing.Size(134, 20);
             this.textBox_codeacreer.TabIndex = 11;
@@ -167,7 +172,7 @@
             // textBox_libellecodeacreer
             // 
             this.textBox_libellecodeacreer.Enabled = false;
-            this.textBox_libellecodeacreer.Location = new System.Drawing.Point(1080, 149);
+            this.textBox_libellecodeacreer.Location = new System.Drawing.Point(1236, 153);
             this.textBox_libellecodeacreer.Name = "textBox_libellecodeacreer";
             this.textBox_libellecodeacreer.Size = new System.Drawing.Size(134, 20);
             this.textBox_libellecodeacreer.TabIndex = 12;
@@ -176,7 +181,7 @@
             // 
             this.checkBox_codeacreer_actif_inactif.AutoSize = true;
             this.checkBox_codeacreer_actif_inactif.Enabled = false;
-            this.checkBox_codeacreer_actif_inactif.Location = new System.Drawing.Point(1080, 175);
+            this.checkBox_codeacreer_actif_inactif.Location = new System.Drawing.Point(1081, 183);
             this.checkBox_codeacreer_actif_inactif.Name = "checkBox_codeacreer_actif_inactif";
             this.checkBox_codeacreer_actif_inactif.Size = new System.Drawing.Size(55, 17);
             this.checkBox_codeacreer_actif_inactif.TabIndex = 13;
@@ -186,7 +191,7 @@
             // button_creercode
             // 
             this.button_creercode.Enabled = false;
-            this.button_creercode.Location = new System.Drawing.Point(1080, 198);
+            this.button_creercode.Location = new System.Drawing.Point(1081, 206);
             this.button_creercode.Name = "button_creercode";
             this.button_creercode.Size = new System.Drawing.Size(75, 23);
             this.button_creercode.TabIndex = 14;
@@ -197,7 +202,7 @@
             // button_deleteRecodage
             // 
             this.button_deleteRecodage.Enabled = false;
-            this.button_deleteRecodage.Location = new System.Drawing.Point(1080, 53);
+            this.button_deleteRecodage.Location = new System.Drawing.Point(1080, 64);
             this.button_deleteRecodage.Name = "button_deleteRecodage";
             this.button_deleteRecodage.Size = new System.Drawing.Size(131, 23);
             this.button_deleteRecodage.TabIndex = 15;
@@ -219,14 +224,14 @@
             // 
             this.progressBar_rapprochement.Location = new System.Drawing.Point(1080, 297);
             this.progressBar_rapprochement.Name = "progressBar_rapprochement";
-            this.progressBar_rapprochement.Size = new System.Drawing.Size(149, 23);
+            this.progressBar_rapprochement.Size = new System.Drawing.Size(304, 23);
             this.progressBar_rapprochement.TabIndex = 17;
             // 
             // button_parambase
             // 
-            this.button_parambase.Location = new System.Drawing.Point(20, 28);
+            this.button_parambase.Location = new System.Drawing.Point(10, 28);
             this.button_parambase.Name = "button_parambase";
-            this.button_parambase.Size = new System.Drawing.Size(133, 23);
+            this.button_parambase.Size = new System.Drawing.Size(148, 23);
             this.button_parambase.TabIndex = 18;
             this.button_parambase.Text = "Param base";
             this.button_parambase.UseVisualStyleBackColor = true;
@@ -234,9 +239,9 @@
             // 
             // button_chargement
             // 
-            this.button_chargement.Location = new System.Drawing.Point(20, 57);
+            this.button_chargement.Location = new System.Drawing.Point(10, 57);
             this.button_chargement.Name = "button_chargement";
-            this.button_chargement.Size = new System.Drawing.Size(133, 46);
+            this.button_chargement.Size = new System.Drawing.Size(148, 46);
             this.button_chargement.TabIndex = 19;
             this.button_chargement.Text = "Chargement base dans le logiciel";
             this.button_chargement.UseVisualStyleBackColor = true;
@@ -244,16 +249,16 @@
             // 
             // progressBar_admin
             // 
-            this.progressBar_admin.Location = new System.Drawing.Point(20, 109);
+            this.progressBar_admin.Location = new System.Drawing.Point(10, 109);
             this.progressBar_admin.Name = "progressBar_admin";
-            this.progressBar_admin.Size = new System.Drawing.Size(133, 23);
+            this.progressBar_admin.Size = new System.Drawing.Size(303, 23);
             this.progressBar_admin.TabIndex = 20;
             // 
             // button_testsqlserver
             // 
-            this.button_testsqlserver.Location = new System.Drawing.Point(21, 189);
+            this.button_testsqlserver.Location = new System.Drawing.Point(165, 28);
             this.button_testsqlserver.Name = "button_testsqlserver";
-            this.button_testsqlserver.Size = new System.Drawing.Size(132, 23);
+            this.button_testsqlserver.Size = new System.Drawing.Size(149, 23);
             this.button_testsqlserver.TabIndex = 21;
             this.button_testsqlserver.Text = "Test connexion SQL Server";
             this.button_testsqlserver.UseVisualStyleBackColor = true;
@@ -261,9 +266,9 @@
             // 
             // button_exportCorresp
             // 
-            this.button_exportCorresp.Location = new System.Drawing.Point(20, 138);
+            this.button_exportCorresp.Location = new System.Drawing.Point(165, 57);
             this.button_exportCorresp.Name = "button_exportCorresp";
-            this.button_exportCorresp.Size = new System.Drawing.Size(133, 45);
+            this.button_exportCorresp.Size = new System.Drawing.Size(149, 45);
             this.button_exportCorresp.TabIndex = 22;
             this.button_exportCorresp.Text = "Exportation vers table de travail reprise";
             this.button_exportCorresp.UseVisualStyleBackColor = true;
@@ -288,7 +293,7 @@
             this.groupBox_admin.Controls.Add(this.progressBar_admin);
             this.groupBox_admin.Location = new System.Drawing.Point(1071, 505);
             this.groupBox_admin.Name = "groupBox_admin";
-            this.groupBox_admin.Size = new System.Drawing.Size(178, 225);
+            this.groupBox_admin.Size = new System.Drawing.Size(329, 149);
             this.groupBox_admin.TabIndex = 24;
             this.groupBox_admin.TabStop = false;
             this.groupBox_admin.Text = "Interface Admin";
@@ -325,11 +330,43 @@
             this.button_okmdpadmin.Visible = false;
             this.button_okmdpadmin.Click += new System.EventHandler(this.button_okmdpadmin_Click);
             // 
+            // button_creer_inactif_module
+            // 
+            this.button_creer_inactif_module.Location = new System.Drawing.Point(1235, 248);
+            this.button_creer_inactif_module.Name = "button_creer_inactif_module";
+            this.button_creer_inactif_module.Size = new System.Drawing.Size(149, 43);
+            this.button_creer_inactif_module.TabIndex = 28;
+            this.button_creer_inactif_module.Text = "Creer code inactif module";
+            this.button_creer_inactif_module.UseVisualStyleBackColor = true;
+            this.button_creer_inactif_module.Click += new System.EventHandler(this.button1_Click);
+            // 
+            // button_creer_inactif_global
+            // 
+            this.button_creer_inactif_global.Location = new System.Drawing.Point(1235, 326);
+            this.button_creer_inactif_global.Name = "button_creer_inactif_global";
+            this.button_creer_inactif_global.Size = new System.Drawing.Size(149, 43);
+            this.button_creer_inactif_global.TabIndex = 29;
+            this.button_creer_inactif_global.Text = "Creer code inactif global";
+            this.button_creer_inactif_global.UseVisualStyleBackColor = true;
+            this.button_creer_inactif_global.Click += new System.EventHandler(this.button2_Click);
+            // 
+            // pictureBox_bottom
+            // 
+            this.pictureBox_bottom.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox_bottom.Image")));
+            this.pictureBox_bottom.Location = new System.Drawing.Point(1110, 668);
+            this.pictureBox_bottom.Name = "pictureBox_bottom";
+            this.pictureBox_bottom.Size = new System.Drawing.Size(274, 68);
+            this.pictureBox_bottom.TabIndex = 30;
+            this.pictureBox_bottom.TabStop = false;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1355, 748);
+            this.ClientSize = new System.Drawing.Size(1412, 748);
+            this.Controls.Add(this.pictureBox_bottom);
+            this.Controls.Add(this.button_creer_inactif_global);
+            this.Controls.Add(this.button_creer_inactif_module);
             this.Controls.Add(this.button_okmdpadmin);
             this.Controls.Add(this.textBox_pass_admin);
             this.Controls.Add(this.button_acces_admin);
@@ -357,6 +394,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_saisie)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView_ref)).EndInit();
             this.groupBox_admin.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox_bottom)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -390,6 +428,9 @@
         private System.Windows.Forms.Button button_acces_admin;
         private System.Windows.Forms.TextBox textBox_pass_admin;
         private System.Windows.Forms.Button button_okmdpadmin;
+        private System.Windows.Forms.Button button_creer_inactif_module;
+        private System.Windows.Forms.Button button_creer_inactif_global;
+        private System.Windows.Forms.PictureBox pictureBox_bottom;
     }
 }
 
