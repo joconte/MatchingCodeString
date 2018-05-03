@@ -193,6 +193,7 @@ namespace RecodageList
             if(terminate)
             {
                 MessageBox.Show("Export terminé");
+                ReactiveButton();
             }
         }
         public void Progres_rapprochement_terminate(int nbItemRapprochés)
@@ -211,9 +212,14 @@ namespace RecodageList
                 MessageBox.Show("Rapprochement automatique terminé. \r\n" + nbItemRapprochés.ToString() + " code(s) rapproché(s) automatiquement.");
                 //UpdateProgress_rapprochement_terminate(nbItemRapprochés);
                 //progressBar_rapprochement.Value = 0;
+                /*
                 button_deleteRecodage.Enabled = true;
                 button_afficherCreationCode.Enabled = true;
                 button_affecter.Enabled = true;
+                */
+
+            ReactiveButton();
+
             progressBar_rapprochement.Value = 0;
                 //MessageBox.Show("Export terminé");
         }
@@ -234,6 +240,7 @@ namespace RecodageList
             InitColorSaisie();
             MessageBox.Show("Rapprochement automatique terminé. \r\n" + nbItemRapprochés.ToString() + " code(s) rapproché(s) automatiquement.");
             progressBar_rapprochement.Value = 0;
+            ReactiveButton();
             button_deleteRecodage.Enabled = true;
             button_afficherCreationCode.Enabled = true;
             button_affecter.Enabled = true;
@@ -260,7 +267,7 @@ namespace RecodageList
             button_afficherCreationCode.Enabled = true;
             button_affecter.Enabled = true;
             */
-            ReactiveAllButton();
+            ReactiveButton();
         }
 
         /*
@@ -844,6 +851,7 @@ namespace RecodageList
         {
             if (button_afficherCreationCode.Text == "Création code")
             {
+                InactiveControlExceptParamButton(button_afficherCreationCode);
                 button_afficherCreationCode.Text = "Annuler";
                 button_affecter.Enabled = false;
                 textBox_codeacreer.Enabled = true;
@@ -852,8 +860,17 @@ namespace RecodageList
                 button_creercode.Enabled = true;
                 button_deleteRecodage.Enabled = false;
                 button_rapprochementmodule.Enabled = false;
+                
 
-                textBox_codeacreer.Text = dataGridView_saisie.CurrentRow.Cells[1].Value.ToString();
+                if (dataGridView_saisie.CurrentRow.Cells[1].Value != null)
+                {
+                    textBox_codeacreer.Text = dataGridView_saisie.CurrentRow.Cells[1].Value.ToString();
+                }
+                else
+                {
+                    textBox_codeacreer.Text = "";
+                }
+
                 if (dataGridView_saisie.CurrentRow.Cells[2].Value != null)
                 {
                     textBox_libellecodeacreer.Text = dataGridView_saisie.CurrentRow.Cells[2].Value.ToString();
@@ -866,6 +883,7 @@ namespace RecodageList
             }
             else if(button_afficherCreationCode.Text == "Annuler")
             {
+                ReactiveButton();
                 button_afficherCreationCode.Text = "Création code";
                 button_affecter.Enabled = true;
                 button_afficherCreationCode.Enabled = true;
@@ -877,6 +895,7 @@ namespace RecodageList
                 checkBox_codeacreer_actif_inactif.Enabled = false;
                 button_deleteRecodage.Enabled = true;
                 button_rapprochementmodule.Enabled = true;
+                
             }
                 
         }
@@ -1292,6 +1311,7 @@ namespace RecodageList
         private void button_rapprochementmodule_Click(object sender, EventArgs e)
         {
             progressBar_rapprochement.Maximum = Init.TableCorrespondanceFiltre.Count - 1;
+            InactiveControlExceptParamButton(button_rapprochementmodule);
             Thread rapprochement = new Thread(new ParameterizedThreadStart(RapprochementModule));
             rapprochement.Start((string)comboBox_filtre.SelectedValue);
             /*
@@ -1395,7 +1415,7 @@ namespace RecodageList
         private void button_exportCorresp_Click(object sender, EventArgs e)
         {
             progressBar_admin.Maximum = Init.TableCorrespondance.Count;
-            
+            InactiveControlExceptParamButton(button_exportCorresp);
             if(InfoSqlServer.SQLServerConnectionString != null)
             {
                 Thread export = new Thread(CorrObject.ExporteCorrespondance);
@@ -1406,6 +1426,7 @@ namespace RecodageList
             else
             {
                 MessageBox.Show("Veuillez définir la base SQL server export via Param Base");
+                ReactiveButton();
             }
             
         }
@@ -1715,7 +1736,15 @@ namespace RecodageList
 
         public void InactiveControlExceptParamButton(Button button)
         {
-            if(button.Name != button_rapprochementmodule.Name)
+            if (button.Name != button_creercode.Name)
+            {
+                button_creercode.Enabled = false;
+            }
+            if (button.Name != button_rapprochement_global.Name)
+            {
+                button_rapprochement_global.Enabled = false;
+            }
+            if (button.Name != button_rapprochementmodule.Name)
             {
                 button_rapprochementmodule.Enabled = false;
             }
@@ -1747,6 +1776,10 @@ namespace RecodageList
             {
                 textBox_codeacreer.Enabled = false;
             }
+            if (button.Name != textBox_pass_admin.Name)
+            {
+                textBox_pass_admin.Enabled = false;
+            }
             if (button.Name != textBox_libellecodeacreer.Name)
             {
                 textBox_libellecodeacreer.Enabled = false;
@@ -1763,6 +1796,10 @@ namespace RecodageList
             {
                 button_acces_admin.Enabled = false;
             }
+            if (button.Name != button_okmdpadmin.Name)
+            {
+                button_okmdpadmin.Enabled = false;
+            }
             if (button.Name != button_parambase.Name)
             {
                 button_parambase.Enabled = false;
@@ -1770,6 +1807,22 @@ namespace RecodageList
             if (button.Name != button_testsqlserver.Name)
             {
                 button_testsqlserver.Enabled = false;
+            }
+            if (button.Name != comboBox_filtre.Name)
+            {
+                comboBox_filtre.Enabled = false;
+            }
+            if (button.Name != button_filter.Name)
+            {
+                button_filter.Enabled = false;
+            }
+            if (button.Name != dataGridView_saisie.Name)
+            {
+                dataGridView_saisie.Enabled = false;
+            }
+            if (button.Name != dataGridView_ref.Name)
+            {
+                dataGridView_ref.Enabled = false;
             }
         }
 
@@ -1780,8 +1833,14 @@ namespace RecodageList
             textBox_pass_admin.Enabled = false;
         }
 
-        public void ReactiveAllButton()
+        public void ReactiveButton()
         {
+            dataGridView_saisie.Enabled = true;
+            dataGridView_ref.Enabled = true;
+            comboBox_filtre.Enabled = true;
+            button_filter.Enabled = true;
+            button_okmdpadmin.Enabled = true;
+            button_rapprochement_global.Enabled = true;
             button_rapprochementmodule.Enabled = true;
             button_creer_inactif_global.Enabled = true;
             button_creer_inactif_module.Enabled = true;
@@ -1789,13 +1848,14 @@ namespace RecodageList
             button_chargement.Enabled = true;
             button_exportCorresp.Enabled = true;
             button_afficherCreationCode.Enabled = true;
-            textBox_codeacreer.Enabled = true;
-            textBox_libellecodeacreer.Enabled = true;
-            checkBox_codeacreer_actif_inactif.Enabled = true;
+            //textBox_codeacreer.Enabled = true;
+            //textBox_libellecodeacreer.Enabled = true;
+            //checkBox_codeacreer_actif_inactif.Enabled = true;
             button_affecter.Enabled = true;
             button_acces_admin.Enabled = true;
             button_parambase.Enabled = true;
             button_testsqlserver.Enabled = true;
+            textBox_pass_admin.Enabled = true;
         }
 
         private void button_rapprochement_global_Click(object sender, EventArgs e)
@@ -1865,6 +1925,7 @@ namespace RecodageList
         private void button1_Click(object sender, EventArgs e)
         {
             progressBar_rapprochement.Maximum = Init.TableCorrespondanceFiltre.Count;
+            InactiveControlExceptParamButton(button_creer_inactif_module);
             Thread creercodeinactif_module = new Thread(new ParameterizedThreadStart(CreerCodeInactifModule));
             creercodeinactif_module.Start((string)comboBox_filtre.SelectedValue);
 
@@ -1926,6 +1987,7 @@ namespace RecodageList
         private void button2_Click(object sender, EventArgs e)
         {
             progressBar_rapprochement.Maximum = Init.TableCorrespondance.Count;
+            InactiveControlExceptParamButton(button_creer_inactif_global);
             Thread creer_inactif_global = new Thread(CreerCodeInactifGlobal);
             creer_inactif_global.Start();
         }
