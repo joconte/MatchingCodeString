@@ -208,8 +208,9 @@ namespace Converter
                     // Allow the user to select which tables to include by showing him the 
                     // table selection dialog.
                     TableSelectionDialog dlg = new TableSelectionDialog();
+                    //dlg.Visible = false;
                     DialogResult res = dlg.ShowTables(schema, this);
-                    if (res == DialogResult.OK)
+                    //if (res == DialogResult.OK)
                         updated = dlg.IncludedTables;
                 }));
                 return updated;

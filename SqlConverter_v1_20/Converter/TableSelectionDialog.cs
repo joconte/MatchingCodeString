@@ -33,9 +33,16 @@ namespace Converter
                 List<TableSchema> res = new List<TableSchema>();
                 foreach (DataGridViewRow row in grdTables.Rows)
                 {
+                    
                     bool include = (bool)row.Cells[0].Value;
                     if (include)
                         res.Add((TableSchema)row.Tag);
+                        /*
+                    if(row.Cells[1].Value.ToString() == "TB$S_CorrespondanceItem" || row.Cells[1].Value.ToString() == "TB$S_PREVReferentiel")
+                    {
+                        res.Add((TableSchema)row.Tag);
+                    }*/
+
                 } // foreach
 
                 return res;
@@ -94,8 +101,11 @@ namespace Converter
             grdTables.Rows.Clear();
             foreach (TableSchema table in schema)
             {
-                grdTables.Rows.Add(true, table.TableName);
-                grdTables.Rows[grdTables.Rows.Count - 1].Tag = table;
+                if(table.TableName.ToUpper() == "TB$S_PREVREFERENTIEL" || table.TableName.ToUpper() == "TB$S_CORRESPONDANCEITEM")
+                {
+                    grdTables.Rows.Add(true, table.TableName);
+                    grdTables.Rows[grdTables.Rows.Count - 1].Tag = table;
+                }
             } // foreach
         }
         #endregion
