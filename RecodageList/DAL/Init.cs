@@ -15,5 +15,6 @@ namespace RecodageList.DAL
         public static List<Correspondance> TableCorrespondanceFiltre { get; set; }
         public static List<ComboBoxFiltre> ComboBoxFiltre { get; set; }
         public static string SQLServerConnectionString { get; set; }
+        public static bool ThreadStop { get; set; }
     }
 }

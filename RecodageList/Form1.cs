@@ -94,7 +94,24 @@ namespace RecodageList
         public delegate void MontrerProgres(int valeur);
         public delegate void MontrerProgresTerminate(bool terminate);
         public delegate void MontrerProgresTerminate_rapprochement(int nbItemRapprochés);
+        public delegate void UpdateButtonText(Button button, string text);
 
+        private void UpdateButtonText_foncdelegate(Button button, string text)
+        {
+            try
+            {
+                Invoke((UpdateButtonText)UpdateButtonText_fonc, button, text);
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine("Erreur : " + ex.Message);
+            }
+        }
+
+        public void UpdateButtonText_fonc(Button button, string text)
+        {
+            button.Text = text;
+        }
 
         private void UpdateProgress_rapprochement(int value)
         {
@@ -1433,304 +1450,332 @@ namespace RecodageList
 
         public void RapprochementGlobal(object clefValeur)
         {
-
-            int nbItemRapprochés = 0;
-
-            //Fonc fonc = new Fonc();
-            Correspondances ObjCorr = new Correspondances();
-            /*
-            string[] examen_ancien_code = dataGridView_saisie.CurrentRow.Cells[1].Value.ToString().Split('#');
-            Correspondances CorrObject = new Correspondances();
-            Correspondance ligne_exam_nouveau_code = CorrObject.RetourneCorrespondanceNouveauCode(Init.TableCorrespondance, examen_ancien_code[0], "135|0|0|NOMEN");
-            Referentiels RefObject = new Referentiels();
-            List<Referentiel> TableRefResultatExamen = new List<Referentiel>();
-            TableRefResultatExamen = RefObject.FiltrerListeResultatExamenReferentielParExamen(TableRef, ligne_exam_nouveau_code.Nouveau_Code);
-            */
-            //Init.TableCorrespondance = TableCorresp;
-            
-            if ((string)clefValeur == "135|0|0|NOMEN")
+            if(button_rapprochement_global.Text == "Rapprochement automatique global")
             {
-                //string[] examen_ancien_code = dataGridView_saisie.CurrentRow.Cells[1].Value.ToString().Split('#');
+                Init.ThreadStop = false;
+                UpdateButtonText_foncdelegate(button_rapprochement_global, "Annuler");
+                //button_rapprochement_global.Text = "Annuler";
+                int nbItemRapprochés = 0;
 
-                for (int i = 0; i < Init.TableCorrespondance.Count; i++)
+                //Fonc fonc = new Fonc();
+                Correspondances ObjCorr = new Correspondances();
+                /*
+                string[] examen_ancien_code = dataGridView_saisie.CurrentRow.Cells[1].Value.ToString().Split('#');
+                Correspondances CorrObject = new Correspondances();
+                Correspondance ligne_exam_nouveau_code = CorrObject.RetourneCorrespondanceNouveauCode(Init.TableCorrespondance, examen_ancien_code[0], "135|0|0|NOMEN");
+                Referentiels RefObject = new Referentiels();
+                List<Referentiel> TableRefResultatExamen = new List<Referentiel>();
+                TableRefResultatExamen = RefObject.FiltrerListeResultatExamenReferentielParExamen(TableRef, ligne_exam_nouveau_code.Nouveau_Code);
+                */
+                //Init.TableCorrespondance = TableCorresp;
+
+                if ((string)clefValeur == "135|0|0|NOMEN")
                 {
-                    if (Init.TableCorrespondance[i].Ancien_Code.Contains("1128"))
-                        Console.WriteLine("Init.TableCorrespondance[i].Ancien_Code : " + Init.TableCorrespondance[i].Ancien_Code);
-                    if (Init.TableCorrespondance[i].Nouveau_Code == "" || Init.TableCorrespondance[i].Nouveau_Code == null)
+                    int i = 0;
+                    //string[] examen_ancien_code = dataGridView_saisie.CurrentRow.Cells[1].Value.ToString().Split('#');
+                    while (i < Init.TableCorrespondance.Count && Init.ThreadStop == false)
                     {
-                        for (int j = 0; j < Init.TableReferentiel.Count; j++)
+                        if (Init.TableCorrespondance[i].Ancien_Code.Contains("1128"))
+                            Console.WriteLine("Init.TableCorrespondance[i].Ancien_Code : " + Init.TableCorrespondance[i].Ancien_Code);
+                        if (Init.TableCorrespondance[i].Nouveau_Code == "" || Init.TableCorrespondance[i].Nouveau_Code == null)
                         {
-                            if (Init.TableCorrespondance[i].Ancien_Code.ToString().Contains("1128#") && Init.TableReferentiel[j].Cpl == "50")
+                            int j = 0;
+                            while(j < Init.TableReferentiel.Count && Init.ThreadStop == false)
                             {
-                                /*
-                                Console.WriteLine("Init.TableCorrespondance[i].Canonical : " + Init.TableCorrespondance[i].Canonical);
-                                Console.WriteLine("fonc.CanonicalString(Init.TableReferentiel[j].Lib) : " + fonc.CanonicalString(Init.TableReferentiel[j].Lib));
-                                Console.WriteLine("Init.TableCorrespondance[i].Cpl : " + Init.TableCorrespondance[i].Cpl);
-                                Console.WriteLine("Init.TableReferentiel[j].Cpl : " + Init.TableReferentiel[j].Cpl);
-                                Console.WriteLine("Init.TableCorrespondance[i].TypeRef : " + Init.TableCorrespondance[i].TypeRef);
-                                Console.WriteLine("Init.TableReferentiel[j].Type : " + Init.TableReferentiel[j].Type);
-                                Console.WriteLine("Init.TableCorrespondance[i].Ancien_Code.ToString().Contains('#') : " + Init.TableCorrespondance[i].Ancien_Code.ToString().Contains("#"));
-                                //Console.WriteLine("Init.TableCorrespondance[i].Canonical : " + Init.TableCorrespondance[i].Canonical);
-                                */
-                            }
+                                if (Init.TableCorrespondance[i].Ancien_Code.ToString().Contains("1128#") && Init.TableReferentiel[j].Cpl == "50")
+                                {
+                                    /*
+                                    Console.WriteLine("Init.TableCorrespondance[i].Canonical : " + Init.TableCorrespondance[i].Canonical);
+                                    Console.WriteLine("fonc.CanonicalString(Init.TableReferentiel[j].Lib) : " + fonc.CanonicalString(Init.TableReferentiel[j].Lib));
+                                    Console.WriteLine("Init.TableCorrespondance[i].Cpl : " + Init.TableCorrespondance[i].Cpl);
+                                    Console.WriteLine("Init.TableReferentiel[j].Cpl : " + Init.TableReferentiel[j].Cpl);
+                                    Console.WriteLine("Init.TableCorrespondance[i].TypeRef : " + Init.TableCorrespondance[i].TypeRef);
+                                    Console.WriteLine("Init.TableReferentiel[j].Type : " + Init.TableReferentiel[j].Type);
+                                    Console.WriteLine("Init.TableCorrespondance[i].Ancien_Code.ToString().Contains('#') : " + Init.TableCorrespondance[i].Ancien_Code.ToString().Contains("#"));
+                                    //Console.WriteLine("Init.TableCorrespondance[i].Canonical : " + Init.TableCorrespondance[i].Canonical);
+                                    */
+                                }
 
-                            if (Init.TableCorrespondance[i].Canonical != "" && Init.TableReferentiel[i].Canonical != ""
-                                && Init.TableCorrespondance[i].Canonical == Init.TableReferentiel[j].Canonical
-                                && Init.TableCorrespondance[i].Cpl == Init.TableReferentiel[j].Cpl
-                                && Init.TableCorrespondance[i].Cpl1 == Init.TableReferentiel[j].Cpl1
-                                && Init.TableCorrespondance[i].Cpl2 == Init.TableReferentiel[j].Cpl2
-                                && Init.TableCorrespondance[i].TypeRef == Init.TableReferentiel[j].Type
-                                && Init.TableCorrespondance[i].Cpl == "135"
-                                && Init.TableReferentiel[j].Cpl == "135"
-                                && Init.TableCorrespondance[i].TypeRef == "NOMEN"
-                                && Init.TableReferentiel[j].Type == "NOMEN")
-                            {
-                                Init.TableCorrespondance[i].Nouveau_Code = Init.TableReferentiel[j].Code;
-                                Init.TableCorrespondance[i].Libelle_Nouveau_Code = Init.TableReferentiel[j].Lib;
-                                if (Init.TableReferentiel[j].InActif == true)
+                                if (Init.TableCorrespondance[i].Canonical != "" && Init.TableReferentiel[i].Canonical != ""
+                                    && Init.TableCorrespondance[i].Canonical == Init.TableReferentiel[j].Canonical
+                                    && Init.TableCorrespondance[i].Cpl == Init.TableReferentiel[j].Cpl
+                                    && Init.TableCorrespondance[i].Cpl1 == Init.TableReferentiel[j].Cpl1
+                                    && Init.TableCorrespondance[i].Cpl2 == Init.TableReferentiel[j].Cpl2
+                                    && Init.TableCorrespondance[i].TypeRef == Init.TableReferentiel[j].Type
+                                    && Init.TableCorrespondance[i].Cpl == "135"
+                                    && Init.TableReferentiel[j].Cpl == "135"
+                                    && Init.TableCorrespondance[i].TypeRef == "NOMEN"
+                                    && Init.TableReferentiel[j].Type == "NOMEN")
                                 {
-                                    Init.TableCorrespondance[i].NouveauCodeInactif = true;
-                                }
-                                else
-                                {
-                                    Init.TableCorrespondance[i].NouveauCodeInactif = false;
-                                }
-                                Init.TableCorrespondance[i].FlagReferentiel = 1;
-                                ObjCorr.UpdateSQLITE_TBCorrespondance(Init.TableCorrespondance[i]);
-                                ObjCorr.UpdateSQLITE_TBCorrespondance_FlagPreventiel(Init.TableCorrespondance[i]);
-                                /*
-                                dataGridView_saisie.Rows[i].Cells[4].Value = Init.TableCorrespondance[i].Nouveau_Code;
-                                dataGridView_saisie.Rows[i].Cells[5].Value = Init.TableCorrespondance[i].Libelle_Nouveau_Code;
-                                dataGridView_saisie.Rows[i].Cells[12].Value = Init.TableCorrespondance[i].NouveauCodeInactif;
-                                dataGridView_saisie.Rows[i].Cells[20].Value = Init.TableCorrespondance[i].FlagReferentiel;
-                                */
-                                nbItemRapprochés++;
-                            }
-                            else if (Init.TableCorrespondance[i].Canonical != "" && Init.TableReferentiel[i].Canonical != ""
-                                && Init.TableCorrespondance[i].Canonical == Init.TableReferentiel[j].Canonical
-                                && Init.TableCorrespondance[i].Cpl == Init.TableReferentiel[j].Cpl
-                                //&& Init.TableCorrespondance[i].Cpl1 == Init.TableReferentiel[j].Cpl1
-                                //&& Init.TableCorrespondance[i].Cpl2 == Init.TableReferentiel[j].Cpl2
-                                && Init.TableCorrespondance[i].TypeRef == Init.TableReferentiel[j].Type
-                                && Init.TableCorrespondance[i].Cpl == "50"
-                                && Init.TableReferentiel[j].Cpl == "50"
-                                && Init.TableCorrespondance[i].TypeRef == "CTRL"
-                                && Init.TableReferentiel[j].Type == "CTRL"
-                                && Init.TableCorrespondance[i].Ancien_Code.ToString().Contains("#"))
-                            {
-                                string[] examen_ancien_code = Init.TableCorrespondance[i].Ancien_Code.ToString().Split('#');
-                                Correspondances CorrObject = new Correspondances();
-                                Correspondance ligne_exam_nouveau_code = CorrObject.RetourneCorrespondanceNouveauCode(Init.TableCorrespondance, examen_ancien_code[0], "135|0|0|NOMEN");
-                                Referentiels RefObject = new Referentiels();
-                                List<Referentiel> TableRefResultatExamen = new List<Referentiel>();
-                                TableRefResultatExamen = RefObject.FiltrerListeResultatExamenReferentielParExamen(Init.TableReferentiel, ligne_exam_nouveau_code.Nouveau_Code);
-                                for (int k = 0; k < TableRefResultatExamen.Count; k++)
-                                {
-                                    if (Init.TableCorrespondance[i].Canonical != "" && TableRefResultatExamen[k].Canonical != ""
-                                && TableRefResultatExamen[k].Canonical == Init.TableCorrespondance[i].Canonical)
+                                    Init.TableCorrespondance[i].Nouveau_Code = Init.TableReferentiel[j].Code;
+                                    Init.TableCorrespondance[i].Libelle_Nouveau_Code = Init.TableReferentiel[j].Lib;
+                                    if (Init.TableReferentiel[j].InActif == true)
                                     {
-                                        Init.TableCorrespondance[i].Nouveau_Code = TableRefResultatExamen[k].Code;
-                                        Init.TableCorrespondance[i].Libelle_Nouveau_Code = TableRefResultatExamen[k].Lib;
-                                        if (TableRefResultatExamen[k].InActif == true)
+                                        Init.TableCorrespondance[i].NouveauCodeInactif = true;
+                                    }
+                                    else
+                                    {
+                                        Init.TableCorrespondance[i].NouveauCodeInactif = false;
+                                    }
+                                    Init.TableCorrespondance[i].FlagReferentiel = 1;
+                                    ObjCorr.UpdateSQLITE_TBCorrespondance(Init.TableCorrespondance[i]);
+                                    ObjCorr.UpdateSQLITE_TBCorrespondance_FlagPreventiel(Init.TableCorrespondance[i]);
+                                    /*
+                                    dataGridView_saisie.Rows[i].Cells[4].Value = Init.TableCorrespondance[i].Nouveau_Code;
+                                    dataGridView_saisie.Rows[i].Cells[5].Value = Init.TableCorrespondance[i].Libelle_Nouveau_Code;
+                                    dataGridView_saisie.Rows[i].Cells[12].Value = Init.TableCorrespondance[i].NouveauCodeInactif;
+                                    dataGridView_saisie.Rows[i].Cells[20].Value = Init.TableCorrespondance[i].FlagReferentiel;
+                                    */
+                                    nbItemRapprochés++;
+                                }
+                                else if (Init.TableCorrespondance[i].Canonical != "" && Init.TableReferentiel[i].Canonical != ""
+                                    && Init.TableCorrespondance[i].Canonical == Init.TableReferentiel[j].Canonical
+                                    && Init.TableCorrespondance[i].Cpl == Init.TableReferentiel[j].Cpl
+                                    //&& Init.TableCorrespondance[i].Cpl1 == Init.TableReferentiel[j].Cpl1
+                                    //&& Init.TableCorrespondance[i].Cpl2 == Init.TableReferentiel[j].Cpl2
+                                    && Init.TableCorrespondance[i].TypeRef == Init.TableReferentiel[j].Type
+                                    && Init.TableCorrespondance[i].Cpl == "50"
+                                    && Init.TableReferentiel[j].Cpl == "50"
+                                    && Init.TableCorrespondance[i].TypeRef == "CTRL"
+                                    && Init.TableReferentiel[j].Type == "CTRL"
+                                    && Init.TableCorrespondance[i].Ancien_Code.ToString().Contains("#"))
+                                {
+                                    string[] examen_ancien_code = Init.TableCorrespondance[i].Ancien_Code.ToString().Split('#');
+                                    Correspondances CorrObject = new Correspondances();
+                                    Correspondance ligne_exam_nouveau_code = CorrObject.RetourneCorrespondanceNouveauCode(Init.TableCorrespondance, examen_ancien_code[0], "135|0|0|NOMEN");
+                                    Referentiels RefObject = new Referentiels();
+                                    List<Referentiel> TableRefResultatExamen = new List<Referentiel>();
+                                    TableRefResultatExamen = RefObject.FiltrerListeResultatExamenReferentielParExamen(Init.TableReferentiel, ligne_exam_nouveau_code.Nouveau_Code);
+                                    int k = 0;
+                                    while (k < TableRefResultatExamen.Count && Init.ThreadStop == false)
+                                    {
+                                        if (Init.TableCorrespondance[i].Canonical != "" && TableRefResultatExamen[k].Canonical != ""
+                                    && TableRefResultatExamen[k].Canonical == Init.TableCorrespondance[i].Canonical)
                                         {
-                                            Init.TableCorrespondance[i].NouveauCodeInactif = true;
+                                            Init.TableCorrespondance[i].Nouveau_Code = TableRefResultatExamen[k].Code;
+                                            Init.TableCorrespondance[i].Libelle_Nouveau_Code = TableRefResultatExamen[k].Lib;
+                                            if (TableRefResultatExamen[k].InActif == true)
+                                            {
+                                                Init.TableCorrespondance[i].NouveauCodeInactif = true;
+                                            }
+                                            else
+                                            {
+                                                Init.TableCorrespondance[i].NouveauCodeInactif = false;
+                                            }
+                                            Init.TableCorrespondance[i].FlagReferentiel = 1;
+                                            ObjCorr.UpdateSQLITE_TBCorrespondance(Init.TableCorrespondance[i]);
+                                            ObjCorr.UpdateSQLITE_TBCorrespondance_FlagPreventiel(Init.TableCorrespondance[i]);
+                                            /*
+                                            dataGridView_saisie.Rows[i].Cells[4].Value = Init.TableCorrespondance[i].Nouveau_Code;
+                                            dataGridView_saisie.Rows[i].Cells[5].Value = Init.TableCorrespondance[i].Libelle_Nouveau_Code;
+                                            dataGridView_saisie.Rows[i].Cells[12].Value = Init.TableCorrespondance[i].NouveauCodeInactif;
+                                            dataGridView_saisie.Rows[i].Cells[20].Value = Init.TableCorrespondance[i].FlagReferentiel;
+                                            */
+                                            nbItemRapprochés++;
                                         }
-                                        else
-                                        {
-                                            Init.TableCorrespondance[i].NouveauCodeInactif = false;
-                                        }
-                                        Init.TableCorrespondance[i].FlagReferentiel = 1;
-                                        ObjCorr.UpdateSQLITE_TBCorrespondance(Init.TableCorrespondance[i]);
-                                        ObjCorr.UpdateSQLITE_TBCorrespondance_FlagPreventiel(Init.TableCorrespondance[i]);
-                                        /*
-                                        dataGridView_saisie.Rows[i].Cells[4].Value = Init.TableCorrespondance[i].Nouveau_Code;
-                                        dataGridView_saisie.Rows[i].Cells[5].Value = Init.TableCorrespondance[i].Libelle_Nouveau_Code;
-                                        dataGridView_saisie.Rows[i].Cells[12].Value = Init.TableCorrespondance[i].NouveauCodeInactif;
-                                        dataGridView_saisie.Rows[i].Cells[20].Value = Init.TableCorrespondance[i].FlagReferentiel;
-                                        */
-                                        nbItemRapprochés++;
+                                        k++;
                                     }
                                 }
+                                j++;
                             }
                         }
+                        //progressBar_rapprochement.Value = i;
+                        UpdateProgress_rapprochement(i);
+                        Console.WriteLine("Avancement : " + i + "/" + Init.TableCorrespondance.Count);
+                        i++;
                     }
-                    //progressBar_rapprochement.Value = i;
-                    UpdateProgress_rapprochement(i);
-                    Console.WriteLine("Avancement : " + i + "/" + Init.TableCorrespondance.Count);
                 }
-            }
-            else if ((string)clefValeur == "141|0|0|NOMEN")
-            {
-                //string[] examen_ancien_code = dataGridView_saisie.CurrentRow.Cells[1].Value.ToString().Split('#');
-
-                for (int i = 0; i < Init.TableCorrespondance.Count; i++)
+                else if ((string)clefValeur == "141|0|0|NOMEN")
                 {
-                    if (Init.TableCorrespondance[i].Ancien_Code.Contains("1128"))
-                        Console.WriteLine("Init.TableCorrespondance[i].Ancien_Code : " + Init.TableCorrespondance[i].Ancien_Code);
-                    if (Init.TableCorrespondance[i].Nouveau_Code == "" || Init.TableCorrespondance[i].Nouveau_Code == null)
-                    {
-                        for (int j = 0; j < Init.TableReferentiel.Count; j++)
-                        {
-                            if (Init.TableCorrespondance[i].Ancien_Code.ToString().Contains("1128#") && Init.TableReferentiel[j].Cpl == "50")
-                            {
-                                /*
-                                Console.WriteLine("Init.TableCorrespondance[i].Canonical : " + Init.TableCorrespondance[i].Canonical);
-                                Console.WriteLine("fonc.CanonicalString(Init.TableReferentiel[j].Lib) : " + fonc.CanonicalString(Init.TableReferentiel[j].Lib));
-                                Console.WriteLine("Init.TableCorrespondance[i].Cpl : " + Init.TableCorrespondance[i].Cpl);
-                                Console.WriteLine("Init.TableReferentiel[j].Cpl : " + Init.TableReferentiel[j].Cpl);
-                                Console.WriteLine("Init.TableCorrespondance[i].TypeRef : " + Init.TableCorrespondance[i].TypeRef);
-                                Console.WriteLine("Init.TableReferentiel[j].Type : " + Init.TableReferentiel[j].Type);
-                                Console.WriteLine("Init.TableCorrespondance[i].Ancien_Code.ToString().Contains('#') : " + Init.TableCorrespondance[i].Ancien_Code.ToString().Contains("#"));
-                                //Console.WriteLine("Init.TableCorrespondance[i].Canonical : " + Init.TableCorrespondance[i].Canonical);
-                                */
-                            }
+                    //string[] examen_ancien_code = dataGridView_saisie.CurrentRow.Cells[1].Value.ToString().Split('#');
 
-                            if (Init.TableCorrespondance[i].Canonical != "" && Init.TableReferentiel[i].Canonical != ""
-                                && Init.TableCorrespondance[i].Canonical == Init.TableReferentiel[j].Canonical
-                                && Init.TableCorrespondance[i].Cpl == Init.TableReferentiel[j].Cpl
-                                && Init.TableCorrespondance[i].Cpl1 == Init.TableReferentiel[j].Cpl1
-                                && Init.TableCorrespondance[i].Cpl2 == Init.TableReferentiel[j].Cpl2
-                                && Init.TableCorrespondance[i].TypeRef == Init.TableReferentiel[j].Type
-                                && Init.TableCorrespondance[i].Cpl == "141"
-                                && Init.TableReferentiel[j].Cpl == "141"
-                                && Init.TableCorrespondance[i].TypeRef == "NOMEN"
-                                && Init.TableReferentiel[j].Type == "NOMEN")
+                    int i = 0;
+                    while (i < Init.TableCorrespondance.Count && Init.ThreadStop==false)
+                    {
+                        if (Init.TableCorrespondance[i].Ancien_Code.Contains("1128"))
+                            Console.WriteLine("Init.TableCorrespondance[i].Ancien_Code : " + Init.TableCorrespondance[i].Ancien_Code);
+                        if (Init.TableCorrespondance[i].Nouveau_Code == "" || Init.TableCorrespondance[i].Nouveau_Code == null)
+                        {
+                            int j = 0;
+                            while (j < Init.TableReferentiel.Count && Init.ThreadStop == false)
                             {
-                                Init.TableCorrespondance[i].Nouveau_Code = Init.TableReferentiel[j].Code;
-                                Init.TableCorrespondance[i].Libelle_Nouveau_Code = Init.TableReferentiel[j].Lib;
-                                if (Init.TableReferentiel[j].InActif == true)
+                                if (Init.TableCorrespondance[i].Ancien_Code.ToString().Contains("1128#") && Init.TableReferentiel[j].Cpl == "50")
                                 {
-                                    Init.TableCorrespondance[i].NouveauCodeInactif = true;
+                                    /*
+                                    Console.WriteLine("Init.TableCorrespondance[i].Canonical : " + Init.TableCorrespondance[i].Canonical);
+                                    Console.WriteLine("fonc.CanonicalString(Init.TableReferentiel[j].Lib) : " + fonc.CanonicalString(Init.TableReferentiel[j].Lib));
+                                    Console.WriteLine("Init.TableCorrespondance[i].Cpl : " + Init.TableCorrespondance[i].Cpl);
+                                    Console.WriteLine("Init.TableReferentiel[j].Cpl : " + Init.TableReferentiel[j].Cpl);
+                                    Console.WriteLine("Init.TableCorrespondance[i].TypeRef : " + Init.TableCorrespondance[i].TypeRef);
+                                    Console.WriteLine("Init.TableReferentiel[j].Type : " + Init.TableReferentiel[j].Type);
+                                    Console.WriteLine("Init.TableCorrespondance[i].Ancien_Code.ToString().Contains('#') : " + Init.TableCorrespondance[i].Ancien_Code.ToString().Contains("#"));
+                                    //Console.WriteLine("Init.TableCorrespondance[i].Canonical : " + Init.TableCorrespondance[i].Canonical);
+                                    */
                                 }
-                                else
+
+                                if (Init.TableCorrespondance[i].Canonical != "" && Init.TableReferentiel[i].Canonical != ""
+                                    && Init.TableCorrespondance[i].Canonical == Init.TableReferentiel[j].Canonical
+                                    && Init.TableCorrespondance[i].Cpl == Init.TableReferentiel[j].Cpl
+                                    && Init.TableCorrespondance[i].Cpl1 == Init.TableReferentiel[j].Cpl1
+                                    && Init.TableCorrespondance[i].Cpl2 == Init.TableReferentiel[j].Cpl2
+                                    && Init.TableCorrespondance[i].TypeRef == Init.TableReferentiel[j].Type
+                                    && Init.TableCorrespondance[i].Cpl == "141"
+                                    && Init.TableReferentiel[j].Cpl == "141"
+                                    && Init.TableCorrespondance[i].TypeRef == "NOMEN"
+                                    && Init.TableReferentiel[j].Type == "NOMEN")
                                 {
-                                    Init.TableCorrespondance[i].NouveauCodeInactif = false;
-                                }
-                                Init.TableCorrespondance[i].FlagReferentiel = 1;
-                                ObjCorr.UpdateSQLITE_TBCorrespondance(Init.TableCorrespondance[i]);
-                                ObjCorr.UpdateSQLITE_TBCorrespondance_FlagPreventiel(Init.TableCorrespondance[i]);
-                                /*
-                                dataGridView_saisie.Rows[i].Cells[4].Value = Init.TableCorrespondance[i].Nouveau_Code;
-                                dataGridView_saisie.Rows[i].Cells[5].Value = Init.TableCorrespondance[i].Libelle_Nouveau_Code;
-                                dataGridView_saisie.Rows[i].Cells[12].Value = Init.TableCorrespondance[i].NouveauCodeInactif;
-                                dataGridView_saisie.Rows[i].Cells[20].Value = Init.TableCorrespondance[i].FlagReferentiel;
-                                */
-                                nbItemRapprochés++;
-                            }
-                            else if (Init.TableCorrespondance[i].Canonical != "" && Init.TableReferentiel[i].Canonical != ""
-                                && Init.TableCorrespondance[i].Canonical == Init.TableReferentiel[j].Canonical
-                                && Init.TableCorrespondance[i].Cpl == Init.TableReferentiel[j].Cpl
-                                //&& Init.TableCorrespondance[i].Cpl1 == Init.TableReferentiel[j].Cpl1
-                                //&& Init.TableCorrespondance[i].Cpl2 == Init.TableReferentiel[j].Cpl2
-                                && Init.TableCorrespondance[i].TypeRef == Init.TableReferentiel[j].Type
-                                && Init.TableCorrespondance[i].Cpl == "60"
-                                && Init.TableReferentiel[j].Cpl == "60"
-                                && Init.TableCorrespondance[i].TypeRef == "CTRL"
-                                && Init.TableReferentiel[j].Type == "CTRL"
-                                && Init.TableCorrespondance[i].Ancien_Code.ToString().Contains("#"))
-                            {
-                                string[] vaccin_ancien_code = Init.TableCorrespondance[i].Ancien_Code.ToString().Split('#');
-                                Correspondances CorrObject = new Correspondances();
-                                Correspondance ligne_vaccin_nouveau_code = CorrObject.RetourneCorrespondanceNouveauCode(Init.TableCorrespondance, vaccin_ancien_code[0], "141|0|0|NOMEN");
-                                Referentiels RefObject = new Referentiels();
-                                List<Referentiel> TableProtocoleVaccinal = new List<Referentiel>();
-                                TableProtocoleVaccinal = RefObject.FiltrerListeResultatExamenReferentielParExamen(Init.TableReferentiel, ligne_vaccin_nouveau_code.Nouveau_Code);
-                                for (int k = 0; k < TableProtocoleVaccinal.Count; k++)
-                                {
-                                    if (Init.TableCorrespondance[i].Canonical != "" && TableProtocoleVaccinal[k].Canonical != ""
-                                && TableProtocoleVaccinal[k].Canonical == Init.TableCorrespondance[i].Canonical)
+                                    Init.TableCorrespondance[i].Nouveau_Code = Init.TableReferentiel[j].Code;
+                                    Init.TableCorrespondance[i].Libelle_Nouveau_Code = Init.TableReferentiel[j].Lib;
+                                    if (Init.TableReferentiel[j].InActif == true)
                                     {
-                                        Init.TableCorrespondance[i].Nouveau_Code = TableProtocoleVaccinal[k].Code;
-                                        Init.TableCorrespondance[i].Libelle_Nouveau_Code = TableProtocoleVaccinal[k].Lib;
-                                        if (TableProtocoleVaccinal[k].InActif == true)
+                                        Init.TableCorrespondance[i].NouveauCodeInactif = true;
+                                    }
+                                    else
+                                    {
+                                        Init.TableCorrespondance[i].NouveauCodeInactif = false;
+                                    }
+                                    Init.TableCorrespondance[i].FlagReferentiel = 1;
+                                    ObjCorr.UpdateSQLITE_TBCorrespondance(Init.TableCorrespondance[i]);
+                                    ObjCorr.UpdateSQLITE_TBCorrespondance_FlagPreventiel(Init.TableCorrespondance[i]);
+                                    /*
+                                    dataGridView_saisie.Rows[i].Cells[4].Value = Init.TableCorrespondance[i].Nouveau_Code;
+                                    dataGridView_saisie.Rows[i].Cells[5].Value = Init.TableCorrespondance[i].Libelle_Nouveau_Code;
+                                    dataGridView_saisie.Rows[i].Cells[12].Value = Init.TableCorrespondance[i].NouveauCodeInactif;
+                                    dataGridView_saisie.Rows[i].Cells[20].Value = Init.TableCorrespondance[i].FlagReferentiel;
+                                    */
+                                    nbItemRapprochés++;
+                                }
+                                else if (Init.TableCorrespondance[i].Canonical != "" && Init.TableReferentiel[i].Canonical != ""
+                                    && Init.TableCorrespondance[i].Canonical == Init.TableReferentiel[j].Canonical
+                                    && Init.TableCorrespondance[i].Cpl == Init.TableReferentiel[j].Cpl
+                                    //&& Init.TableCorrespondance[i].Cpl1 == Init.TableReferentiel[j].Cpl1
+                                    //&& Init.TableCorrespondance[i].Cpl2 == Init.TableReferentiel[j].Cpl2
+                                    && Init.TableCorrespondance[i].TypeRef == Init.TableReferentiel[j].Type
+                                    && Init.TableCorrespondance[i].Cpl == "60"
+                                    && Init.TableReferentiel[j].Cpl == "60"
+                                    && Init.TableCorrespondance[i].TypeRef == "CTRL"
+                                    && Init.TableReferentiel[j].Type == "CTRL"
+                                    && Init.TableCorrespondance[i].Ancien_Code.ToString().Contains("#"))
+                                {
+                                    string[] vaccin_ancien_code = Init.TableCorrespondance[i].Ancien_Code.ToString().Split('#');
+                                    Correspondances CorrObject = new Correspondances();
+                                    Correspondance ligne_vaccin_nouveau_code = CorrObject.RetourneCorrespondanceNouveauCode(Init.TableCorrespondance, vaccin_ancien_code[0], "141|0|0|NOMEN");
+                                    Referentiels RefObject = new Referentiels();
+                                    List<Referentiel> TableProtocoleVaccinal = new List<Referentiel>();
+                                    TableProtocoleVaccinal = RefObject.FiltrerListeResultatExamenReferentielParExamen(Init.TableReferentiel, ligne_vaccin_nouveau_code.Nouveau_Code);
+                                    int k = 0;
+                                    while (k < TableProtocoleVaccinal.Count && Init.ThreadStop == false)
+                                    {
+                                        if (Init.TableCorrespondance[i].Canonical != "" && TableProtocoleVaccinal[k].Canonical != ""
+                                    && TableProtocoleVaccinal[k].Canonical == Init.TableCorrespondance[i].Canonical)
                                         {
-                                            Init.TableCorrespondance[i].NouveauCodeInactif = true;
+                                            Init.TableCorrespondance[i].Nouveau_Code = TableProtocoleVaccinal[k].Code;
+                                            Init.TableCorrespondance[i].Libelle_Nouveau_Code = TableProtocoleVaccinal[k].Lib;
+                                            if (TableProtocoleVaccinal[k].InActif == true)
+                                            {
+                                                Init.TableCorrespondance[i].NouveauCodeInactif = true;
+                                            }
+                                            else
+                                            {
+                                                Init.TableCorrespondance[i].NouveauCodeInactif = false;
+                                            }
+                                            Init.TableCorrespondance[i].FlagReferentiel = 1;
+                                            ObjCorr.UpdateSQLITE_TBCorrespondance(Init.TableCorrespondance[i]);
+                                            ObjCorr.UpdateSQLITE_TBCorrespondance_FlagPreventiel(Init.TableCorrespondance[i]);
+                                            /*
+                                            dataGridView_saisie.Rows[i].Cells[4].Value = Init.TableCorrespondance[i].Nouveau_Code;
+                                            dataGridView_saisie.Rows[i].Cells[5].Value = Init.TableCorrespondance[i].Libelle_Nouveau_Code;
+                                            dataGridView_saisie.Rows[i].Cells[12].Value = Init.TableCorrespondance[i].NouveauCodeInactif;
+                                            dataGridView_saisie.Rows[i].Cells[20].Value = Init.TableCorrespondance[i].FlagReferentiel;
+                                            */
+                                            nbItemRapprochés++;
                                         }
-                                        else
-                                        {
-                                            Init.TableCorrespondance[i].NouveauCodeInactif = false;
-                                        }
-                                        Init.TableCorrespondance[i].FlagReferentiel = 1;
-                                        ObjCorr.UpdateSQLITE_TBCorrespondance(Init.TableCorrespondance[i]);
-                                        ObjCorr.UpdateSQLITE_TBCorrespondance_FlagPreventiel(Init.TableCorrespondance[i]);
-                                        /*
-                                        dataGridView_saisie.Rows[i].Cells[4].Value = Init.TableCorrespondance[i].Nouveau_Code;
-                                        dataGridView_saisie.Rows[i].Cells[5].Value = Init.TableCorrespondance[i].Libelle_Nouveau_Code;
-                                        dataGridView_saisie.Rows[i].Cells[12].Value = Init.TableCorrespondance[i].NouveauCodeInactif;
-                                        dataGridView_saisie.Rows[i].Cells[20].Value = Init.TableCorrespondance[i].FlagReferentiel;
-                                        */
-                                        nbItemRapprochés++;
+                                        k++;
                                     }
                                 }
+                                j++;
                             }
                         }
+                        //progressBar_rapprochement.Value = i;
+                        UpdateProgress_rapprochement(i);
+                        Console.WriteLine("Avancement : " + i + "/" + Init.TableCorrespondance.Count);
+                        i++;
                     }
-                    //progressBar_rapprochement.Value = i;
-                    UpdateProgress_rapprochement(i);
-                    Console.WriteLine("Avancement : " + i + "/" + Init.TableCorrespondance.Count);
                 }
-            }
-            else
-            {
-                for (int i = 0; i < Init.TableCorrespondance.Count; i++)
+                else
                 {
-                    if (Init.TableCorrespondance[i].Nouveau_Code == "" || Init.TableCorrespondance[i].Nouveau_Code == null)
+                    int i = 0;
+                    while (i < Init.TableCorrespondance.Count && Init.ThreadStop == false)
                     {
-                        for (int j = 0; j < Init.TableReferentiel.Count; j++)
+                        if (Init.TableCorrespondance[i].Nouveau_Code == "" || Init.TableCorrespondance[i].Nouveau_Code == null)
                         {
-                            if (Init.TableCorrespondance[i].Canonical != "" && Init.TableReferentiel[i].Canonical != ""
-                                && Init.TableCorrespondance[i].Canonical == Init.TableReferentiel[j].Canonical
-                                && Init.TableCorrespondance[i].Cpl == Init.TableReferentiel[j].Cpl
-                                && Init.TableCorrespondance[i].Cpl1 == Init.TableReferentiel[j].Cpl1
-                                && Init.TableCorrespondance[i].Cpl2 == Init.TableReferentiel[j].Cpl2
-                                && Init.TableCorrespondance[i].TypeRef == Init.TableReferentiel[j].Type)
+                            int j = 0;
+                            while (j < Init.TableReferentiel.Count && Init.ThreadStop == false)
                             {
-                                Init.TableCorrespondance[i].Nouveau_Code = Init.TableReferentiel[j].Code;
-                                Init.TableCorrespondance[i].Libelle_Nouveau_Code = Init.TableReferentiel[j].Lib;
-                                if (Init.TableReferentiel[j].InActif == true)
+                                if (Init.TableCorrespondance[i].Canonical != "" && Init.TableReferentiel[i].Canonical != ""
+                                    && Init.TableCorrespondance[i].Canonical == Init.TableReferentiel[j].Canonical
+                                    && Init.TableCorrespondance[i].Cpl == Init.TableReferentiel[j].Cpl
+                                    && Init.TableCorrespondance[i].Cpl1 == Init.TableReferentiel[j].Cpl1
+                                    && Init.TableCorrespondance[i].Cpl2 == Init.TableReferentiel[j].Cpl2
+                                    && Init.TableCorrespondance[i].TypeRef == Init.TableReferentiel[j].Type)
                                 {
-                                    Init.TableCorrespondance[i].NouveauCodeInactif = true;
+                                    Init.TableCorrespondance[i].Nouveau_Code = Init.TableReferentiel[j].Code;
+                                    Init.TableCorrespondance[i].Libelle_Nouveau_Code = Init.TableReferentiel[j].Lib;
+                                    if (Init.TableReferentiel[j].InActif == true)
+                                    {
+                                        Init.TableCorrespondance[i].NouveauCodeInactif = true;
+                                    }
+                                    else
+                                    {
+                                        Init.TableCorrespondance[i].NouveauCodeInactif = false;
+                                    }
+                                    Init.TableCorrespondance[i].FlagReferentiel = 1;
+                                    ObjCorr.UpdateSQLITE_TBCorrespondance(Init.TableCorrespondance[i]);
+                                    ObjCorr.UpdateSQLITE_TBCorrespondance_FlagPreventiel(Init.TableCorrespondance[i]);
+                                    /*
+                                    dataGridView_saisie.Rows[i].Cells[4].Value = Init.TableCorrespondance[i].Nouveau_Code;
+                                    dataGridView_saisie.Rows[i].Cells[5].Value = Init.TableCorrespondance[i].Libelle_Nouveau_Code;
+                                    dataGridView_saisie.Rows[i].Cells[12].Value = Init.TableCorrespondance[i].NouveauCodeInactif;
+                                    dataGridView_saisie.Rows[i].Cells[20].Value = Init.TableCorrespondance[i].FlagReferentiel;
+                                    */
+                                    nbItemRapprochés++;
                                 }
-                                else
-                                {
-                                    Init.TableCorrespondance[i].NouveauCodeInactif = false;
-                                }
-                                Init.TableCorrespondance[i].FlagReferentiel = 1;
-                                ObjCorr.UpdateSQLITE_TBCorrespondance(Init.TableCorrespondance[i]);
-                                ObjCorr.UpdateSQLITE_TBCorrespondance_FlagPreventiel(Init.TableCorrespondance[i]);
-                                /*
-                                dataGridView_saisie.Rows[i].Cells[4].Value = Init.TableCorrespondance[i].Nouveau_Code;
-                                dataGridView_saisie.Rows[i].Cells[5].Value = Init.TableCorrespondance[i].Libelle_Nouveau_Code;
-                                dataGridView_saisie.Rows[i].Cells[12].Value = Init.TableCorrespondance[i].NouveauCodeInactif;
-                                dataGridView_saisie.Rows[i].Cells[20].Value = Init.TableCorrespondance[i].FlagReferentiel;
-                                */
-                                nbItemRapprochés++;
+                                j++;
                             }
                         }
+                        //progressBar_rapprochement.Value = i;
+                        UpdateProgress_rapprochement(i);
+                        Console.WriteLine("Avancement : " + i + "/" + Init.TableCorrespondance.Count);
+                        i++;
                     }
-                    //progressBar_rapprochement.Value = i;
-                    UpdateProgress_rapprochement(i);
-                    Console.WriteLine("Avancement : " + i + "/" + Init.TableCorrespondance.Count);
                 }
+
+                UpdateProgress_rapprochement_terminate(nbItemRapprochés);
+                UpdateButtonText_foncdelegate(button_rapprochement_global, "Rapprochement automatique global");
+                /*
+                var source = new BindingSource();
+                source.DataSource = Init.TableCorrespondance;
+
+                //dataGridView_saisie.BeginInvoke(new Action(() => dataGridView_saisie.DataSource = source));
+
+                dataGridView_saisie.DataSource = source;
+
+                InitStructSaisie();
+                InitColorSaisie();
+                MessageBox.Show("Rapprochement automatique terminé. \r\n" + nbItemRapprochés.ToString() + " code(s) rapproché(s) automatiquement.");
+                UpdateProgress_rapprochement_terminate(nbItemRapprochés);
+                //progressBar_rapprochement.Value = 0;
+                button_deleteRecodage.Enabled = true;
+                button_afficherCreationCode.Enabled = true;
+                button_affecter.Enabled = true;*/
+
             }
-
-            UpdateProgress_rapprochement_terminate(nbItemRapprochés);
-            /*
-            var source = new BindingSource();
-            source.DataSource = Init.TableCorrespondance;
-
-            //dataGridView_saisie.BeginInvoke(new Action(() => dataGridView_saisie.DataSource = source));
-
-            dataGridView_saisie.DataSource = source;
-
-            InitStructSaisie();
-            InitColorSaisie();
-            MessageBox.Show("Rapprochement automatique terminé. \r\n" + nbItemRapprochés.ToString() + " code(s) rapproché(s) automatiquement.");
-            UpdateProgress_rapprochement_terminate(nbItemRapprochés);
-            //progressBar_rapprochement.Value = 0;
-            button_deleteRecodage.Enabled = true;
-            button_afficherCreationCode.Enabled = true;
-            button_affecter.Enabled = true;*/
+            else if(button_rapprochement_global.Text == "Annuler")
+            {
+                Init.ThreadStop = true;
+                UpdateButtonText_foncdelegate(button_rapprochement_global, "Rapprochement automatique global");
+                //button_rapprochement_global.Text = "Rapprochement automatique global";
+            }
 
         }
 
@@ -1865,6 +1910,16 @@ namespace RecodageList
             InactiveAllTextbox();
             Thread rapprochement = new Thread(new ParameterizedThreadStart(RapprochementGlobal));
             rapprochement.Start((string)comboBox_filtre.SelectedValue);
+            /*
+            if(button_rapprochement_global.Text == "Rapprochement automatique global")
+            {
+                button_rapprochement_global.Text = "Annuler";
+            }
+            else if(button_rapprochement_global.Text == "Annuler")
+            {
+                button_rapprochement_global.Text = "Rapprochement automatique global";
+            }
+            */
         }
 
         private void button_acces_admin_Click(object sender, EventArgs e)
@@ -1959,24 +2014,36 @@ namespace RecodageList
             Correspondances ObjCorr = new Correspondances();
             int nbItemRapprochés = 0;
             
-            for (int i = 0; i < Init.TableCorrespondance.Count; i++)
+            int i = 0;
+            if(button_creer_inactif_global.Text == "Creer code inactif global")
             {
-                if ((Init.TableCorrespondance[i].Nouveau_Code == null || Init.TableCorrespondance[i].Nouveau_Code == "")
-                    && Init.TableCorrespondance[i].Libelle_Ancien_Code!=null && Init.TableCorrespondance[i].Libelle_Ancien_Code!=""
-                    && Init.TableCorrespondance[i].Cpl != "50" && Init.TableCorrespondance[i].Cpl != "60")
+                Init.ThreadStop = false;
+                UpdateButtonText_foncdelegate(button_creer_inactif_global, "Annuler");
+                while (i < Init.TableCorrespondance.Count && Init.ThreadStop == false)
                 {
-                    Init.TableCorrespondance[i].Nouveau_Code = Init.TableCorrespondance[i].Ancien_Code;
-                    Init.TableCorrespondance[i].Libelle_Nouveau_Code = Init.TableCorrespondance[i].Libelle_Ancien_Code;
-                    Init.TableCorrespondance[i].NouveauCodeInactif = true;
-                    Init.TableCorrespondance[i].FlagReferentiel = 2;
-                    ObjCorr.UpdateSQLITE_TBCorrespondance(Init.TableCorrespondance[i]);
-                    ObjCorr.UpdateSQLITE_TBCorrespondance_FlagPreventiel(Init.TableCorrespondance[i]);
-                    nbItemRapprochés++;
+                    if ((Init.TableCorrespondance[i].Nouveau_Code == null || Init.TableCorrespondance[i].Nouveau_Code == "")
+                        && Init.TableCorrespondance[i].Libelle_Ancien_Code != null && Init.TableCorrespondance[i].Libelle_Ancien_Code != ""
+                        && Init.TableCorrespondance[i].Cpl != "50" && Init.TableCorrespondance[i].Cpl != "60")
+                    {
+                        Init.TableCorrespondance[i].Nouveau_Code = Init.TableCorrespondance[i].Ancien_Code;
+                        Init.TableCorrespondance[i].Libelle_Nouveau_Code = Init.TableCorrespondance[i].Libelle_Ancien_Code;
+                        Init.TableCorrespondance[i].NouveauCodeInactif = true;
+                        Init.TableCorrespondance[i].FlagReferentiel = 2;
+                        ObjCorr.UpdateSQLITE_TBCorrespondance(Init.TableCorrespondance[i]);
+                        ObjCorr.UpdateSQLITE_TBCorrespondance_FlagPreventiel(Init.TableCorrespondance[i]);
+                        nbItemRapprochés++;
+                    }
+                    UpdateProgress_rapprochement(i);
+                    i++;
                 }
-                UpdateProgress_rapprochement(i);
+                UpdateProgress_rapprochement_module_terminate(nbItemRapprochés);
+                UpdateButtonText_foncdelegate(button_creer_inactif_global, "Creer code inactif global");
             }
-            UpdateProgress_rapprochement_module_terminate(nbItemRapprochés);
-
+            else if (button_creer_inactif_global.Text == "Annuler")
+            {
+                Init.ThreadStop = true;
+                UpdateButtonText_foncdelegate(button_creer_inactif_global, "Creer code inactif global");
+            }
         }
 
         public void CreerCodeInactifModule_terminate(object nbItemRapprochés)
