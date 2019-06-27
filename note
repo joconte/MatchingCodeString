@@ -1,0 +1,13 @@
+LAPTOP-TAG40IG0\SQLEXPRESS01
+
+Test connexion SQL Server
+Option afficher seulement recodé, seulement non recodé
+Possibilité d'arreter les threads
+griser les controles pendant execution thread : OK
+gerer la creation inactif vaccin / examen
+forcer les tables a l'import
+
+textbox code a creer
+textbox libelle
+checkbox inactif
+button creer code 

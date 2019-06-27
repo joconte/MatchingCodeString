@@ -17,13 +17,6 @@ namespace RecodageList.BLL
             return TableCorresp;
         }
 
-        public List<CorrespondanceAffichage> InitTableCorrespAffichage(List<Correspondance> TableCorresp)
-        {
-            var source = new BindingSource();
-            CorrespondancesAffichages CorrAffichage = new CorrespondancesAffichages();
-            List<CorrespondanceAffichage> TableCorrespAffichage = CorrAffichage.ObtenirListeCorrespondanceAffichage(TableCorresp);
-            
-            return TableCorrespAffichage;
-        }
+        
     }
 }
