@@ -7,5 +7,6 @@ namespace DbAccess
     public class InfoSqlServer
     {
         public static string SQLServerConnectionString { get; set; }
+        public static bool BaseCharge { get; set; }
     }
 }

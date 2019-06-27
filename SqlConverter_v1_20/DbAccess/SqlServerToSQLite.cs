@@ -439,14 +439,39 @@ namespace DbAccess
         private static string BuildSqlServerTableQuery(TableSchema ts)
         {
             StringBuilder sb = new StringBuilder();
-            sb.Append("SELECT ");
-            for (int i = 0; i < ts.Columns.Count; i++)
+            if (ts.TableName.ToUpper()=="TB$S_PREVREFERENTIEL")
             {
-                sb.Append("[" + ts.Columns[i].ColumnName + "]");
-                if (i < ts.Columns.Count - 1)
-                    sb.Append(", ");
-            } // for
-            sb.Append(" FROM " + ts.TableSchemaName + "." + "[" + ts.TableName + "]");
+                sb.Append("SELECT ");
+                for (int i = 0; i < ts.Columns.Count; i++)
+                {
+                    sb.Append("[" + ts.Columns[i].ColumnName + "]");
+                    if (i < ts.Columns.Count - 1)
+                        sb.Append(", ");
+                } // for
+                sb.Append(" FROM " + ts.TableSchemaName + "." + "[" + ts.TableName + "] where isnull(TypeItem,'')!='PersonnePhysique'");
+            }
+            else if (ts.TableName.ToUpper() == "TB$S_CORRESPONDANCEITEM")
+            {
+                sb.Append("SELECT ");
+                for (int i = 0; i < ts.Columns.Count; i++)
+                {
+                    sb.Append("[" + ts.Columns[i].ColumnName + "]");
+                    if (i < ts.Columns.Count - 1)
+                        sb.Append(", ");
+                } // for
+                sb.Append(" FROM " + ts.TableSchemaName + "." + "[" + ts.TableName + "] where isnull(NomRef,'')!='PersonnePhysique'");
+            }
+            else
+            {
+                sb.Append("SELECT ");
+                for (int i = 0; i < ts.Columns.Count; i++)
+                {
+                    sb.Append("[" + ts.Columns[i].ColumnName + "]");
+                    if (i < ts.Columns.Count - 1)
+                        sb.Append(", ");
+                } // for
+                sb.Append(" FROM " + ts.TableSchemaName + "." + "[" + ts.TableName + "]");
+            }
             return sb.ToString();
         }
 
@@ -819,8 +844,11 @@ namespace DbAccess
                             continue;
                         if (reader["TABLE_SCHEMA"] == DBNull.Value)
                             continue;
-                        tableNames.Add((string)reader["TABLE_NAME"]);
-                        tblschema.Add((string)reader["TABLE_SCHEMA"]);
+                        if (reader["TABLE_NAME"].ToString().ToUpper() == "TB$S_CORRESPONDANCEITEM" || reader["TABLE_NAME"].ToString().ToUpper() == "TB$S_PREVREFERENTIEL")
+                        {
+                            tableNames.Add((string)reader["TABLE_NAME"]);
+                            tblschema.Add((string)reader["TABLE_SCHEMA"]);
+                        }
                     } // while
                 } // using
 

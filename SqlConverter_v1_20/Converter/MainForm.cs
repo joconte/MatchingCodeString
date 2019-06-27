@@ -56,7 +56,7 @@ namespace Converter
                     conn.Open();
 
                     // Get the names of all DBs in the database server.
-                    SqlCommand query = new SqlCommand(@"select distinct [name] from sysdatabases", conn);
+                    SqlCommand query = new SqlCommand(@"select distinct [name] from sysdatabases where [name] like '%_PREVTGXV7'", conn);
                     using (SqlDataReader reader = query.ExecuteReader())
                     {
                         cboDatabases.Items.Clear();
@@ -90,6 +90,7 @@ namespace Converter
         private void MainForm_Load(object sender, EventArgs e)
         {
             txtSQLitePath.Text = System.IO.Path.GetDirectoryName(Application.ExecutablePath) + "\\PREVTGXV7.db";
+            txtSQLitePath.Text.Replace("\\\\", "\\\\\\\\");
             UpdateSensitivity();
 
             string version = Assembly.GetExecutingAssembly().GetName().Version.ToString();
@@ -158,6 +159,7 @@ namespace Converter
             bool createViews = cbxCreateViews.Checked;
         	
             string sqlitePath = txtSQLitePath.Text.Trim();
+            sqlitePath.Replace("\\\\", "\\\\\\\\");
             this.Cursor = Cursors.WaitCursor;
             SqlConversionHandler handler = new SqlConversionHandler(delegate(bool done,
                 bool success, int percent, string msg) {
@@ -181,6 +183,7 @@ namespace Converter
                                     MessageBoxIcon.Information);
                                 pbrProgress.Value = 0;
                                 lblMessage.Text = string.Empty;
+                                DbAccess.InfoSqlServer.BaseCharge = true;
                             }
                             else
                             {
@@ -193,9 +196,11 @@ namespace Converter
                                         MessageBoxIcon.Error);
                                     pbrProgress.Value = 0;
                                     lblMessage.Text = string.Empty;
+                                    DbAccess.InfoSqlServer.BaseCharge = false;
                                 }
                                 else
                                     Application.Exit();
+                                DbAccess.InfoSqlServer.BaseCharge = false;
                             }
                         }
                     }));

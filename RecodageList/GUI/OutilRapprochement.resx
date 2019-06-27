@@ -124,7 +124,7 @@
   <data name="pictureBox_bottom.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAAPUAAAA9CAYAAAB1Ci+8AAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
-        wwAADsMBx2+oZAAAABl0RVh0U29mdHdhcmUATWljcm9zb2Z0IE9mZmljZX/tNXEAADASSURBVHhe7V0J
+        vAAADrwBlbxySQAAABl0RVh0U29mdHdhcmUATWljcm9zb2Z0IE9mZmljZX/tNXEAADASSURBVHhe7V0J
         XFNX1qfTfbe2tXtnunemy0zb6XSbaad7O52ZTtuxbtVOP622tmPb6bS2nbaiIkZENEIIjxAIASKETUQF
         DCoiKCouiAIBwk4IIQRiCBFRz/c/L4RGfC61dD7rF36/P++9c/f77v+ec+677yVg9uzZZzQUJfbHlDud
         iYsKWxdIhfvhx5kGSeFPHbJS+6WKUvv0iC2dZVE7e0hTSxRW2FoiFdcPP840SAp/qhAMpkuEHfZPo0rt
@@ -331,6 +331,33 @@
         wu8DJgLAW0F5q+alIMlIgMl/Iwh/C4hzJ4h0D655Qe63gLjSDjwFkj3rcvU9D8Lx5hXeOfYyk88XLPOE
         uXjH2QviwpXb/UcmJ46PIb+HebEP1yCp8y6UdytkNwHXAleiTrwllTeU8MR02m0f9cOP4cXsgP8FQB/j
         9TTfcyIAAAAASUVORK5CYII=
+</value>
+  </data>
+  <metadata name="menuStrip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>181, 17</value>
+  </metadata>
+  <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        AAABAAEAEBAAAAEAIABoBAAAFgAAACgAAAAQAAAAIAAAAAEAIAAAAAAAAAQAABILAAASCwAAAAAAAAAA
+        AAD/////////////////////////////////////////////////////////////////////////////
+        ////////////////////////////////////////////////////////////////////////////////
+        /////////////////////////////////////////////////////////////////v///v7/////////
+        ///////////////////////////////////////////+///////////////+////////////////////
+        //////////////////////////////358//9+fL///79/////////////v/+//z////8/v3//PXr//vy
+        5P///v7////////////////////////////79On/+fDi//vz5f/99+z//v38//7/////9eP//d2x/+zK
+        lf/03r3////////+/f////7//////////////////////////////////v37///77P/2++z/pOLT/2rS
+        3P+j0cb//uvP//z26v///v3//////////v/////////////+/v///////vv4//boxv/708P/bcfl/wDW
+        2/9w2Mr/+eC7//bYrP/t0qT/89u1//337f/////////+/////////v7///////biwP/lxpn/5ru7/1Wx
+        5/88xc3/Ccij/znCmf/d1Kn/8dGl/+bHk//rx5D/+/Dh///////////////////////++/f/9uzc///i
+        qP9xr9X/mcDZ/9/ltf9YxZr/ccGK//LYsP/y2bP/89y6//vy5P///////////////////v7///////js
+        1//10p3/ycWz/8nPxP//5Lf//9+5/+/Xqv/16c///////////v////////////////////////7+////
+        ///679//6MOK//bkxf/99N//79is/+zYrv/v1Kn/8NSn//348f////////79////////////////////
+        /////////fr2//np0f/+/fv///////nq0P/u0aH/7NGl/+vMmv/46tL////////+/v//////////////
+        ///////////////////////////+/////v//////+uzV/+3Pn//mw4v/8dy7/////////v7/////////
+        //////////////////////////79///////////////+///////++O//8tmy//Pfwf////////7+////
+        //////////////////////////////////////////////////////7//////////v///fv/////////
+        ////////AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+        AAAAAAAAAAAAAA==
 </value>
   </data>
 </root>

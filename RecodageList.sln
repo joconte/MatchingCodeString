@@ -14,6 +14,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Converter", "SqlConverter_v
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbAccess", "SqlConverter_v1_20\DbAccess\DbAccess.csproj", "{23AAF1EF-2EB6-43AD-8103-A687F04A7288}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OutilRapprochementTests", "OutilRapprochementTests\OutilRapprochementTests.csproj", "{1A5B8932-A8DB-4E21-BB68-4E0FF9D70DEE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -46,6 +48,14 @@ Global
 		{23AAF1EF-2EB6-43AD-8103-A687F04A7288}.Release|Any CPU.Build.0 = Release|Any CPU
 		{23AAF1EF-2EB6-43AD-8103-A687F04A7288}.Release|x86.ActiveCfg = Release|x86
 		{23AAF1EF-2EB6-43AD-8103-A687F04A7288}.Release|x86.Build.0 = Release|x86
+		{1A5B8932-A8DB-4E21-BB68-4E0FF9D70DEE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1A5B8932-A8DB-4E21-BB68-4E0FF9D70DEE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1A5B8932-A8DB-4E21-BB68-4E0FF9D70DEE}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{1A5B8932-A8DB-4E21-BB68-4E0FF9D70DEE}.Debug|x86.Build.0 = Debug|Any CPU
+		{1A5B8932-A8DB-4E21-BB68-4E0FF9D70DEE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1A5B8932-A8DB-4E21-BB68-4E0FF9D70DEE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1A5B8932-A8DB-4E21-BB68-4E0FF9D70DEE}.Release|x86.ActiveCfg = Release|Any CPU
+		{1A5B8932-A8DB-4E21-BB68-4E0FF9D70DEE}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

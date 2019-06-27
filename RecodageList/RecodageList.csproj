@@ -58,12 +58,6 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <HintPath>..\packages\EntityFramework.6.0.0\lib\net45\EntityFramework.dll</HintPath>
-    </Reference>
-    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <HintPath>..\packages\EntityFramework.6.0.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
-    </Reference>
     <Reference Include="SQLite.NET, Version=0.21.1869.3794, Culture=neutral, PublicKeyToken=c273bd375e695f9c">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>bin\Debug\SQLite.NET.dll</HintPath>
@@ -95,26 +89,77 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DAL\ComboBoxFiltre.cs" />
-    <Compile Include="DAL\ComboBoxFiltres.cs" />
+    <Compile Include="BLL\ActionRecodage.cs" />
+    <Compile Include="BLL\ActionRecodageMODULE_GLOBAL.cs" />
+    <Compile Include="BLL\ChargementTablesEnMemoire.cs" />
+    <Compile Include="BLL\ComboBoxFiltreBLL.cs" />
+    <Compile Include="BLL\ComboBox_EntrepriseBLL.cs" />
+    <Compile Include="BLL\CorrespondanceBLL.cs" />
+    <Compile Include="BLL\Fonc.cs" />
+    <Compile Include="BLL\GUIFonction.cs" />
+    <Compile Include="BLL\LevenshteinBLL.cs" />
+    <Compile Include="BLL\ReferentielBLL.cs" />
+    <Compile Include="BLL\VariablePartage.cs" />
+    <Compile Include="DAL\ComboBoxFiltreDAL.cs" />
     <Compile Include="DAL\ConnexionSQLITE.cs" />
     <Compile Include="DAL\ConnexionSQLServer.cs" />
-    <Compile Include="DAL\Correspondance.cs" />
-    <Compile Include="DAL\Correspondances.cs" />
-    <Compile Include="DAL\Init.cs" />
-    <Compile Include="DAL\Referentiel.cs" />
-    <Compile Include="DAL\Referentiels.cs" />
-    <Compile Include="Fonction\Fonc.cs" />
-    <Compile Include="Form1.cs">
+    <Compile Include="DAL\CorrespondanceDAL.cs" />
+    <Compile Include="DAL\ReferentielDAL.cs" />
+    <Compile Include="GUI\Chargement.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="GUI\Chargement.Designer.cs">
+      <DependentUpon>Chargement.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\InterfaceAdmin.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\InterfaceAdmin.Designer.cs">
+      <DependentUpon>InterfaceAdmin.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\InterfaceAdmin_pass.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\InterfaceAdmin_pass.Designer.cs">
+      <DependentUpon>InterfaceAdmin_pass.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\InterfaceCreerCodeAvance.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\InterfaceCreerCodeAvance.Designer.cs">
+      <DependentUpon>InterfaceCreerCodeAvance.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\OutilRapprochement.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\OutilRapprochement.Designer.cs">
+      <DependentUpon>OutilRapprochement.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\RattachementEtablissementEntreprise.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\RattachementEtablissementEntreprise.Designer.cs">
+      <DependentUpon>RattachementEtablissementEntreprise.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="Form1.resx">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <EmbeddedResource Include="GUI\Chargement.resx">
+      <DependentUpon>Chargement.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\InterfaceAdmin.resx">
+      <DependentUpon>InterfaceAdmin.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\InterfaceAdmin_pass.resx">
+      <DependentUpon>InterfaceAdmin_pass.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\InterfaceCreerCodeAvance.resx">
+      <DependentUpon>InterfaceCreerCodeAvance.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\OutilRapprochement.resx">
+      <DependentUpon>OutilRapprochement.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\RattachementEtablissementEntreprise.resx">
+      <DependentUpon>RattachementEtablissementEntreprise.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -140,9 +185,7 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="BLL\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\SqlConverter_v1_20\Converter\Converter.csproj">
       <Project>{1d389047-977d-4278-8357-ac0ac751b95e}</Project>

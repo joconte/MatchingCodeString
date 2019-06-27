@@ -5,6 +5,7 @@ using System.Data.SQLite;
 using System.Windows.Forms;
 using System.Runtime.InteropServices;
 using Microsoft.Win32.SafeHandles;
+using RecodageList.BLL;
 
 namespace RecodageList.DAL
 {
@@ -21,7 +22,8 @@ namespace RecodageList.DAL
 
         public void SetConnection()
         {
-            sql_con = new SQLiteConnection("Data Source="+ System.IO.Path.GetDirectoryName(Application.ExecutablePath) + "\\PREVTGXV7.db;Version=3;New=False;Compress=True;");
+            VariablePartage.CheminBaseClient = VariablePartage.CheminBaseClient.Replace("\\\\", "\\\\\\\\");
+            sql_con = new SQLiteConnection("Data Source="+ VariablePartage.CheminBaseClient +";Version=3;New=False;Compress=True;");
 
         }
 
